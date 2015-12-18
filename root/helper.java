@@ -1,9 +1,48 @@
+import java.util.HashMap;
+
 /*
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+    static int loPrime[];
+    static void loPrimeSieve(int N)
+    {
+	loPrime= new int[N + 1];		
+	int pr[] = new int[N];
+	int sz=0;
+	for (int i = 2; i <= N; ++i)
+	{
+	    if (loPrime[i] == 0)
+	    {
+		loPrime[i] = i;	            
+		pr[sz]=i;
+		sz++;
+	    }
+	    for (int j = 0; j < sz && pr[j] <= loPrime[i] && i * pr[j] <= N; ++j)
+		loPrime[i * pr[j]] = pr[j];
+	}
+    }
+
+    static HashMap<Integer,Integer> primeFactorize(int N)   //Dependency : A sieve (loPrime[]) which contains the lowest prime divisor for each number
+    {
+	HashMap<Integer,Integer> mp = new HashMap<>();
+	int ct,prime;
+	while(N!=1)
+	{
+	    prime = loPrime[N];
+	    ct = 0;
+	    while(N % prime == 0)
+	    {
+		N /= prime;	
+		ct++;
+	    }
+	    mp.put(prime, ct);
+	}
+	return mp;
+    }
 
 
     private static int lower_bound(int arr[] , int key) //if it exists then returns the lower bound or else returns -(pos+1)
