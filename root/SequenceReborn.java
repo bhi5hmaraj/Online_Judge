@@ -1,0 +1,136 @@
+import java.util.*;
+import java.io.*;
+public class SequenceReborn      //Matrix exponentiation
+{
+	static int mod =1000000007;
+	static int f1,f2;
+	public static int mul(int a,int b)
+	{
+		return ((a%mod)*(b%mod))%mod;
+	}
+	public static int add(int a,int b)
+	{
+		return ((a%mod)+(b%mod))%mod;
+	}
+	static class Matrix
+	{
+		int e00,e01,e10,e11;
+		Matrix(int a,int b,int c,int d)
+		{
+			e00=a;e01=b;e10=c;e11=d;
+		}
+		Matrix multiply(Matrix that)
+		{
+			int a=add(mul(this.e00,that.e00),mul(this.e01,that.e10));
+			int b=add(mul(this.e00,that.e01),mul(this.e01,that.e11));
+			int c=add(mul(this.e10,that.e00),mul(this.e11,that.e10));
+			int d=add(mul(this.e10,that.e01),mul(this.e11,that.e11));
+			return new Matrix(a,b,c,d);
+		}
+		public String toString()
+		{
+			return e00+" "+e01+"\n"+e10+" "+e11+"\n";
+		}
+	}
+	public static Matrix pow(Matrix m,int b)
+	{
+		if(b==1)
+			return m;
+		else
+		{
+			if((b&1) == 0)
+			{
+				return pow(m.multiply(m),b/2);
+			}
+			else
+			{
+				return m.multiply(pow(m.multiply(m),(b-1)/2));
+			}
+		}
+	}
+	static int f(int n)
+	{
+		if(n==1)
+			return f1;
+		else if(n==2)
+			return f2;
+		else
+		{
+			Matrix base = new Matrix(1, -1, 1, 0);			
+			Matrix constant = new Matrix(f2, 0, f1, 0);
+			base = pow(base,n-2);
+			Matrix ans = base.multiply(constant);
+			return ans.e00;
+		}
+	}
+	
+	/*
+	 * |fn   |  = |**|^(n-2) *  |fn-1|
+	 * |fn-1 |    |**|          |fn-2|      We need to find matrix M and exponentiate it n-2 times which can be done in O(log(n)) complexity
+	 *              ^---Matrix M  
+	 */            
+	
+    public static void main(String args[])throws IOException
+    {
+        MyScanner2 s1=new MyScanner2();    
+        PrintWriter out=new PrintWriter(new BufferedOutputStream(System.out), true);      //Close the output stream after use  
+        f1 = s1.nextInt();
+        f2 = s1.nextInt();
+        int fn = f(s1.nextInt());
+    	if(fn < 0)
+    		out.println((fn%mod)+mod);
+    	else
+    		out.println(fn%mod);
+        out.close();
+    }
+}
+class MyScanner2 {
+        BufferedReader br;
+        StringTokenizer st;
+ 
+        public MyScanner2() {
+            br = new BufferedReader(new InputStreamReader(System.in));
+        }
+ 
+        String next()throws IOException {
+            while (st == null || !st.hasMoreElements()) {
+                //try {
+                    st = new StringTokenizer(br.readLine());
+                //} catch (IOException e) {
+                   // e.printStackTrace();
+                //}
+            }
+            return st.nextToken();
+        }
+ 
+        int nextInt()throws IOException { return Integer.parseInt(next()); }
+        long nextLong()throws IOException { return Long.parseLong(next()); }
+        double nextDouble()throws IOException { return Double.parseDouble(next()); }
+         
+        String nextLine(){
+            String str = "";
+            try {
+                str = br.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return str;
+        }
+        int[] nextIntArray(int n)throws IOException {
+            int[] arr = new int[n];
+            for (int i = 0; i < n; i++) {
+                arr[i] = nextInt();
+            }
+            return arr;
+        }
+       
+        long[] nextLongArray(int n)throws IOException {
+            long[] arr = new long[n];
+            for (int i = 0; i < n; i++) {
+                arr[i] = nextLong();
+            }
+            return arr;
+        }
+
+}
+        
