@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-class CHEFST
+class CHEFST//
 {
     public static void main(String args[])
     {
