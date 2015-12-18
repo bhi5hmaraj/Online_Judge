@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-public class CleanerRobot
+public class CleanerRobot // edited 
 {
 	static int w,h;
 	static char chars[][];
