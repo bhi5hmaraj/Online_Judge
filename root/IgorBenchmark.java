@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -94,94 +95,129 @@ public class IgorBenchmark {
     }
     public static void main(String []args) throws IOException {
 	Scanner in = new Scanner(System.in);
-	//OutputWriter out = new OutputWriter(System.out);  
-	PrintWriter out=new PrintWriter(new BufferedOutputStream(System.out), true);      //Close the output stream after use
-	Task solver = new Task();
-	solver.solve(in, out);
+	OutputWriter out = new OutputWriter(System.out);  		
+	solve(in, out);
 	out.close();
+	in.close();
     }
-    static class Task{
-	    public void solve(Scanner s1, PrintWriter out)throws IOException{		
-	        r = s1.nextInt();
-	        c = s1.nextInt();     
-	        int query = s1.nextInt();
-	        chars = new char[r][c];
-	        for(int i=0;i<r;i++)
-	        {
-	        	String line = s1.next();        	
-	        	chars[i]  = line.toCharArray();
-	        }        
-	        //long start = System.nanoTime();
-	        marked = new boolean [r*c];
-	        id = new int[r*c];
-	        Pair p = new Pair();
-	        int uid = 0;
-	        for(int i=0;i<r;i++)
-	        {
-	            for(int j=0;j<c;j++)
-	            {
-	        	if(chars[i][j] == '.' && !marked[to1D(i, j)])
-	        	{
-	        	    p.i = i;
-	        	    p.j = j;
-	        	    map.put(uid, path(p, uid++));
-	        	}
-	            }
-	        }
-	        StringBuilder sb = new StringBuilder();
-	        while(query-->0)
-	        {
-	            sb.append(map.get(id[to1D(s1.nextInt()-1, s1.nextInt()-1)]) );
-	        }
-	        out.print(sb);
-	        out.close();
-	    }
-	}
-	static class Scanner{
-	    public BufferedReader reader;
-	    public StringTokenizer st;
-	    public Scanner(InputStream stream){
-		reader = new BufferedReader(new InputStreamReader(stream));
-		st = null;
-	    }
-	    public String next(){
-		while(st == null || !st.hasMoreTokens()){
-		    try{
-			String line = reader.readLine();
-			if(line == null) return null;
-			st = new StringTokenizer(line);
-		    }catch (Exception e){
-			throw (new RuntimeException());
-		    }
-		}
-		return st.nextToken();
-	    }
-	    public int nextInt(){
-		return Integer.parseInt(next());
-	    }
-	    public long nextLong(){
-		return Long.parseLong(next());
-	    }
-	    public double nextDouble(){
-		return Double.parseDouble(next());
-	    }
-	}
-	static class OutputWriter{
-	    BufferedWriter writer;
-	    public OutputWriter(OutputStream stream){
-		writer = new BufferedWriter(new OutputStreamWriter(stream));
-	    }
-	    public void print(int i) throws IOException {
-		writer.write(i);
-	    }
-	    public void print(String s) throws IOException {
-		writer.write(s);
-	    }
-	    public void print(char []c) throws IOException {
-		writer.write(c);
-	    }
-	    public void close() throws IOException {
-		writer.close();
-	    }
-	}
+    private static void solve(Scanner s1, OutputWriter out){		
+        r = s1.nextInt();
+        c = s1.nextInt();     
+        int query = s1.nextInt();
+        chars = new char[r][c];
+        for(int i=0;i<r;i++)
+        {
+        	String line = s1.next();        	
+        	chars[i]  = line.toCharArray();
+        }        
+        //long start = System.nanoTime();
+        marked = new boolean [r*c];
+        id = new int[r*c];
+        Pair p = new Pair();
+        int uid = 0;
+        for(int i=0;i<r;i++)
+        {
+            for(int j=0;j<c;j++)
+            {
+        	if(chars[i][j] == '.' && !marked[to1D(i, j)])
+        	{
+        	    p.i = i;
+        	    p.j = j;
+        	    map.put(uid, path(p, uid++));
+        	}
+            }
+        }
+        while(query-->0)
+        {
+            out.print(map.get(id[to1D(s1.nextInt()-1, s1.nextInt()-1)]) );
+            out.println();
+        }        
+    }
+	
+    static class Scanner{
+ 	public BufferedReader reader;
+ 	public StringTokenizer st;
+ 	public Scanner(InputStream stream){
+ 	    reader = new BufferedReader(new InputStreamReader(stream));
+ 	    st = null;
+ 	}
+ 	public String next(){
+ 	    while(st == null || !st.hasMoreTokens()){
+ 		try{
+ 		    String line = reader.readLine();
+ 		    if(line == null) return null;
+ 		    st = new StringTokenizer(line);
+ 		}catch (Exception e){
+ 		    throw (new RuntimeException());
+ 		}
+ 	    }
+ 	    return st.nextToken();
+ 	}
+ 	public int nextInt(){
+ 	    return Integer.parseInt(next());
+ 	}
+ 	public long nextLong(){
+ 	    return Long.parseLong(next());
+ 	}
+ 	public double nextDouble(){
+ 	    return Double.parseDouble(next());
+ 	}
+         int[] nextIntArray(int n) {
+             int[] arr = new int[n];
+             for (int i = 0; i < n; i++) {
+                 arr[i] = nextInt();
+             }
+             return arr;
+         }
+        
+         long[] nextLongArray(int n) {
+             long[] arr = new long[n];
+             for (int i = 0; i < n; i++) {
+                 arr[i] = nextLong();
+             }
+             return arr;
+         }
+ 	public void close(){	
+ 	    try{reader.close();} catch(IOException e){e.printStackTrace();}	
+ 	}
+     }
+    static class OutputWriter{
+ 	BufferedWriter writer;
+ 	public OutputWriter(OutputStream stream){
+ 	    writer = new BufferedWriter(new OutputStreamWriter(stream));
+ 	}
+ 	public void print(int i) {
+ 	    try{writer.write(i);} catch(IOException e){e.printStackTrace();}
+ 	}
+ 	public void print(long i) {
+ 	    try{writer.write(String.valueOf(i));} catch(IOException e){e.printStackTrace();}
+ 	}
+ 	public void print(double i) {
+ 	    try{writer.write(String.valueOf(i));} catch(IOException e){e.printStackTrace();}
+ 	}
+ 	public void print(boolean i) {
+ 	    try{writer.write(String.valueOf(i));} catch(IOException e){e.printStackTrace();}
+ 	}
+ 	public void print(char i) {
+ 	    try{writer.write(i);} catch(IOException e){e.printStackTrace();}
+ 	}
+ 	public void print(Object o){
+ 	    try{writer.write(o.toString());} catch(IOException e){e.printStackTrace();}
+ 	}
+ 	public void print(Object o[]){
+ 	    try{writer.write(Arrays.deepToString(o));} catch(IOException e){e.printStackTrace();}
+ 	}
+ 	public void print(String s){
+ 	    try{writer.write(s);} catch(IOException e){e.printStackTrace();}
+ 	}
+ 	public void println(){
+ 	    try{writer.write('\n');} catch(IOException e){e.printStackTrace();}
+ 	}
+ 	public void print(char []c){
+ 	    try{writer.write(c);} catch(IOException e){e.printStackTrace();}
+ 	}
+ 	public void close(){
+ 	    try{writer.close();} catch(IOException e){e.printStackTrace();}
+ 	}
+     }
 }

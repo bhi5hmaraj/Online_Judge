@@ -1,6 +1,6 @@
 import java.io.*;
-import java.util.StringTokenizer;
-public class template {
+import java.util.*;
+class  {
     public static void main(String []args) throws IOException {
 	Scanner      in  = new Scanner(System.in);
 	OutputWriter out = new OutputWriter(System.out);
@@ -9,7 +9,7 @@ public class template {
 	in.close();
     }
 
-    public static void solve(Scanner s1, OutputWriter out){
+    private static void solve(Scanner s1, OutputWriter out){
 	
 	
 	
@@ -43,8 +43,23 @@ public class template {
 	public double nextDouble(){
 	    return Double.parseDouble(next());
 	}
+        int[] nextIntArray(int n) {
+            int[] arr = new int[n];
+            for (int i = 0; i < n; i++) {
+                arr[i] = nextInt();
+            }
+            return arr;
+        }
+       
+        long[] nextLongArray(int n) {
+            long[] arr = new long[n];
+            for (int i = 0; i < n; i++) {
+                arr[i] = nextLong();
+            }
+            return arr;
+        }
 	public void close(){	
-	    reader.close();
+	   try{ reader.close(); } catch(IOException e){e.printStackTrace();}
 	}
     }
     static class OutputWriter{
@@ -53,22 +68,36 @@ public class template {
 	    writer = new BufferedWriter(new OutputStreamWriter(stream));
 	}
 	public void print(int i) {
+	    try{writer.write(String.valueOf(i));} catch(IOException e){e.printStackTrace();}
+	}
+	public void print(long i) {
+	    try{writer.write(String.valueOf(i));} catch(IOException e){e.printStackTrace();}
+	}
+	public void print(double i) {
+	    try{writer.write(String.valueOf(i));} catch(IOException e){e.printStackTrace();}
+	}
+	public void print(boolean i) {
+	    try{writer.write(String.valueOf(i));} catch(IOException e){e.printStackTrace();}
+	}
+	public void print(char i) {
 	    try{writer.write(i);} catch(IOException e){e.printStackTrace();}
 	}
 	public void print(Object o){
-
 	    try{writer.write(o.toString());} catch(IOException e){e.printStackTrace();}
 	}
+	public void print(Object o[]){
+	    try{writer.write(Arrays.deepToString(o));} catch(IOException e){e.printStackTrace();}
+	}
 	public void print(String s){
-
 	    try{writer.write(s);} catch(IOException e){e.printStackTrace();}
 	}
+	public void println(){
+	    try{writer.write('\n');} catch(IOException e){e.printStackTrace();}
+	}
 	public void print(char []c){
-
 	    try{writer.write(c);} catch(IOException e){e.printStackTrace();}
 	}
 	public void close(){
-
 	    try{writer.close();} catch(IOException e){e.printStackTrace();}
 	}
     }

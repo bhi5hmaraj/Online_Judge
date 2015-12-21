@@ -1,87 +1,143 @@
 import java.io.*;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
-import java.util.StringTokenizer;
+
 public class RegistrationBenchmark {
-    static class Scanner{
-	    public BufferedReader reader;
-	    public StringTokenizer st;
-	    public Scanner(InputStream stream){
-		reader = new BufferedReader(new InputStreamReader(stream));
-		st = null;
-	    }
-	    public String next(){
-		while(st == null || !st.hasMoreTokens()){
-		    try{
-			String line = reader.readLine();
-			if(line == null) return null;
-			st = new StringTokenizer(line);
-		    }catch (Exception e){
-			throw (new RuntimeException());
-		    }
+    static class InputReader {
+	private InputStream stream;
+	private byte[] buf = new byte[1024];
+	private int curChar;
+	private int numChars;
+	private SpaceCharFilter filter;
+
+	public InputReader(InputStream stream) {
+	    this.stream = stream;
+	}
+
+	public int read() {
+	    if(numChars == -1)
+		throw new InputMismatchException();
+	    if(curChar >= numChars) {
+		curChar = 0;
+		try {
+		    numChars = stream.read(buf);
+		} catch(IOException e) {
+		    throw new InputMismatchException();
 		}
-		return st.nextToken();
+		if(numChars <= 0)
+		    return -1;
 	    }
-	    public int nextInt(){
-		return Integer.parseInt(next());
-	    }
-	    public long nextLong(){
-		return Long.parseLong(next());
-	    }
-	    public double nextDouble(){
-		return Double.parseDouble(next());
-	    }
+	    return buf[curChar++];
 	}
-	static class OutputWriter{
-	    BufferedWriter writer;
-	    public OutputWriter(OutputStream stream){
-		writer = new BufferedWriter(new OutputStreamWriter(stream));
+
+	public int readInt() {
+	    int c = read();
+	    while(isSpaceChar(c))
+		c = read();
+	    int sgn = 1;
+	    if(c == '-') {
+		sgn = -1;
+		c = read();
 	    }
-	    public void print(int i) throws IOException {
-		writer.write(i);
-	    }
-	    public void print(String s) throws IOException {
-		writer.write(s);
-	    }
-	    public void print(char []c) throws IOException {
-		writer.write(c);
-	    }
-	    public void close() throws IOException {
-		writer.close();
-	    }
+	    int res = 0;
+	    do {
+		if(c < '0' || c > '9')
+		    throw new InputMismatchException();
+		res *= 10;
+		res += c - '0';
+		c = read();
+	    } while(!isSpaceChar(c));
+	    return res * sgn;
 	}
+
+	public String readString() {
+	    int c = read();
+	    while(isSpaceChar(c))
+		c = read();
+	    StringBuilder res = new StringBuilder();
+	    do {
+		if(Character.isValidCodePoint(c))
+		    res.appendCodePoint(c);
+		c = read();
+	    } while(!isSpaceChar(c));
+	    return res.toString();
+	}
+
+	public boolean isSpaceChar(int c) {
+	    if(filter != null)
+		return filter.isSpaceChar(c);
+	    return isWhitespace(c);
+	}
+
+	public static boolean isWhitespace(int c) {
+	    return c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == -1;
+	}
+
+	public String next() {
+	    return readString();
+	}
+
+	public interface SpaceCharFilter {
+	    public boolean isSpaceChar(int ch);
+
+	}
+
+    }
+
+    static class OutputWriter{
+	BufferedWriter writer;
+	public OutputWriter(OutputStream stream){
+	    writer = new BufferedWriter(new OutputStreamWriter(stream));
+	}
+	public void print(int i) throws IOException {
+	    writer.write(String.valueOf(i));
+	}
+	public void println() throws IOException {
+	    writer.write('\n');
+	}
+	public void print(String s) throws IOException {
+	    writer.write(s);
+	}
+	public void print(char []c) throws IOException {
+	    writer.write(c);
+	}
+	public void close() throws IOException {
+	    writer.close();
+	}
+    }
     public static void main(String []args) throws IOException {
-	Scanner in = new Scanner(System.in);
+	InputReader in = new InputReader(System.in);
 	OutputWriter out = new OutputWriter(System.out);
 	Task solver = new Task();
 	solver.solve(in, out);
 	out.close();
     }
     static class Task{
-	    public void solve(Scanner s1, OutputWriter out)throws IOException{
-		int n=s1.nextInt();
-		String str="";
-		Integer temp;
-		Map<String,Integer> map=new HashMap<String,Integer>();
-		//StringBuffer sb=new StringBuffer();
-		for(int i=1;i<=n;i++)
+	public void solve(InputReader s1, OutputWriter out)throws IOException{
+	    int n=s1.readInt();
+	    String str;
+	    Integer temp;
+	    Map<String,Integer> map=new HashMap<String,Integer>();		
+	    for(int i=1;i<=n;i++)
+	    {
+		str=s1.next();
+		temp=map.get(str);
+		if(temp == null)
 		{
-		    str=s1.next();
-		    temp=map.get(str);
-		    if(temp == null)
-		    {
-			map.put(str,0);
-			out.print("OK\n");
-		    }
-		    else
-		    {
-			out.print(str+""+(temp+1)+"\n");
-			map.put(str, temp+1);
-		    }
+		    map.put(str,0);
+		    out.print("OK");
+		    out.println();
 		}
-		//out.print(sb.toString());
-		out.close();
+		else
+		{
+		    out.print(str);
+		    out.print((temp+1));
+		    out.println();
+		    map.put(str, temp+1);
+		}
 	    }
 	}
+    }
 }
 
