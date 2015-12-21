@@ -221,6 +221,22 @@ import java.util.Random;
     		mp.put(k, query + 1);
     	}
     }
+    public static HashMap<Character,Integer> freqOfChar(String str)
+    {
+	HashMap<Character,Integer> mp = new HashMap<>();
+	for(int i=0,len=str.length();i<len;i++)
+	{
+	    char k = str.charAt(i);
+	    	Integer query = mp.get(k);
+	    	if(query == null)
+	    		mp.put(k, new Integer(1));
+	    	else
+	    	{
+	    		mp.put(k, query + 1);
+	    	}
+	}
+	return mp;
+    }
     private static String filter(String str)   //Removes duplicate chars in a string
     {
 	HashSet<Character> filter = new HashSet<>();
