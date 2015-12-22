@@ -2,29 +2,32 @@ import java.util.*;
 import java.io.*;
 public class LoadBalancing
 {
+    static  void shuffleArray(int[] array) {
+        Random random = new Random();
+        for (int i = array.length - 1; i > 0; i--) {
+            int index = random.nextInt(i + 1);
+            int temp = array[index];
+            array[index] = array[i];
+            array[i] = temp;
+        }
+    }
     public static void main(String args[])
     {
         MyScanner2 s1=new MyScanner2();  
         PrintWriter out=new PrintWriter(new BufferedOutputStream(System.out), true);  //Close the output stream after use
 	int len = s1.nextInt();
 	int arr[] = s1.nextIntArray(len);
-	double avg = Arrays.stream(arr).average().getAsDouble();
-	//out.println(avg);
-	int f = (int)Math.floor(avg);
-	int c = (int)Math.ceil(avg);
-	int total =0 , ct =0;
-	for(int i=0;i<len;i++)
-	{
-	    //out.println(arr[i]+" diff "+Math.min(Math.abs(f-arr[i]), Math.abs(c-arr[i])));
-	    int diff =Math.min(Math.abs(f-arr[i]), Math.abs(c-arr[i]));
-	    total += diff;
-	    if(diff != 0)
-		ct++;
-	}
-	if(ct == 1)
-	    out.println(total);
-	else
-	    out.println((int)Math.ceil((double)total/(double)2));
+	int balanced[] = new int[len];
+	int sum = Arrays.stream(arr).sum();
+	int mod = sum % len;
+	int c = (int)Math.ceil((double)sum/(double)len);
+	int f = sum/len;
+	for(int i=0;i<len-mod;i++)
+	    balanced[i] = f;
+	for(int i=len-mod;i<len;i++)
+	    balanced[i] = c;
+	shuffleArray(arr);
+	Arrays.sort(arr);
 	out.close();
     }
     static class MyScanner2 {

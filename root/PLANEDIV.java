@@ -1,4 +1,4 @@
-import java.util.*;
+animport java.util.*;
 import java.io.*;
 class PLANEDIV
 {
