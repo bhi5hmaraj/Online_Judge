@@ -7,7 +7,7 @@ class CHEFQUE       //Java Bitset runs in 0.92 s
     {
 	private long bits[];
 	public MyBitset() {
-	    bits = new long[1<<26];
+	    bits = new long[1<<27];
 	}
 	public void set(int index,boolean b)
 	{

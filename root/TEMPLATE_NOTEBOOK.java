@@ -1,6 +1,6 @@
 import java.io.*;
 import java.util.*;
-class  template{
+class  TEMPLATE_NOTEBOOK{
     public static void main(String []args) throws IOException {
 	FastScanner      in  = new FastScanner(System.in);
 	OutputWriter     out = new OutputWriter(System.out);   //try to enclose Bufferedwriter inside printwriter and benchmark its performance
