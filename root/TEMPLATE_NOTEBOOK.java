@@ -1,24 +1,24 @@
 import java.io.*;
 import java.util.*;
-class  {
+class  template{
     public static void main(String []args) throws IOException {
-	Scanner      in  = new Scanner(System.in);
-	OutputWriter out = new OutputWriter(System.out);
+	FastScanner      in  = new FastScanner(System.in);
+	OutputWriter     out = new OutputWriter(System.out);   //try to enclose Bufferedwriter inside printwriter and benchmark its performance
 	solve(in, out);
 	out.close();
 	in.close();
     }
 
-    private static void solve(Scanner s1, OutputWriter out){
+    private static void solve(FastScanner s1, OutputWriter out){
 	
 	
 	
     }
 
-    static class Scanner{
+    static class FastScanner{
 	public BufferedReader reader;
 	public StringTokenizer st;
-	public Scanner(InputStream stream){
+	public FastScanner(InputStream stream){
 	    reader = new BufferedReader(new InputStreamReader(stream));
 	    st = null;
 	}
@@ -62,6 +62,7 @@ class  {
 	   try{ reader.close(); } catch(IOException e){e.printStackTrace();}
 	}
     }
+    /*
     static class OutputWriter{
 	BufferedWriter writer;
 	public OutputWriter(OutputStream stream){
@@ -92,7 +93,47 @@ class  {
 	    try{writer.write(s);} catch(IOException e){e.printStackTrace();}
 	}
 	public void println(){
-	    try{writer.write('\n');} catch(IOException e){e.printStackTrace();}
+	    try{writer.newLine();} catch(IOException e){e.printStackTrace();}
+	}
+	public void print(char []c){
+	    try{writer.write(c);} catch(IOException e){e.printStackTrace();}
+	}
+	public void close(){
+	    try{writer.close();} catch(IOException e){e.printStackTrace();}
+	}
+    }
+    */
+    static class OutputWriter{
+	BufferedWriter writer;
+	public OutputWriter(OutputStream stream){
+	    writer = new BufferedWriter(new OutputStreamWriter(stream));
+	}
+	public void print(int i) {
+	   print(Integer.toString(i));
+	}
+	public void print(long i) {
+	    print(Long.toString(i));
+	}
+	public void print(double i) {
+	    print(Double.toString(i));
+	}
+	public void print(boolean i) {
+	    print(Boolean.toString(i));
+	}	
+	public void print(Object o){
+	    print(o.toString());
+	}
+	public void print(Object o[]){
+	    print(Arrays.deepToString(o));
+	}
+	public void print(char i) {
+	    try{writer.write(i);} catch(IOException e){e.printStackTrace();}
+	}
+	public void print(String s){
+	    try{writer.write(s);} catch(IOException e){e.printStackTrace();}
+	}
+	public void println(){
+	    try{writer.newLine();} catch(IOException e){e.printStackTrace();}
 	}
 	public void print(char []c){
 	    try{writer.write(c);} catch(IOException e){e.printStackTrace();}

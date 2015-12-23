@@ -45,6 +45,18 @@ class  AMLPALIN{
 	    {
 		if(freq[0] == 1 && freq[3]==0)
 		    out.print("aa");
+		else if(freq[0]%2==1 && freq[3]%2==1)
+		{
+		    for(int i=1;i<=freq[0]/2;i++)
+			out.print("aa");
+		    for(int i=1;i<=freq[3]/2;i++)
+			out.print("bb");
+		    out.print("aa");
+		    for(int i=1;i<=freq[3]/2;i++)
+			out.print("bb");
+		    for(int i=1;i<=freq[0]/2;i++)
+			out.print("aa");
+		}
 		else if(freq[0]*2 >= ( ((freq[0]/2)) * 4 + freq[3]*2))
 		{
 		    for(int i=1;i<=freq[0];i++)

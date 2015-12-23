@@ -1,13 +1,45 @@
 import java.util.*;
 import java.io.*;
-class CHEFQUE
+class CHEFQUE       //Java Bitset runs in 0.92 s
 {
-    public static void main(String args[])
+    
+    static class MyBitset
     {
-        MyScanner2 s1=new MyScanner2();  
-        PrintWriter out=new PrintWriter(new BufferedOutputStream(System.out), true);  //Close the output stream after use
-        //StringBuilder sb=new StringBuilder();
-        long q=s1.nextLong();
+	private long bits[];
+	public MyBitset() {
+	    bits = new long[1<<26];
+	}
+	public void set(int index,boolean b)
+	{
+	    int bucket = index / 64;
+	    boolean alreadySet = get(index);
+	    if(b && !alreadySet)
+	    {
+		long setter = 1 << ((64-(index%64))-1);
+		bits[bucket] |= setter;
+	    }
+	    else
+	    {
+		if(alreadySet)
+		{
+		    long setter = 1 << ((64-(index%64))-1);
+		    bits[bucket] ^= setter;
+		}
+	    }
+	}
+	public void set(int index)
+	{
+	    set(index,true);
+	}
+	public boolean get(int index)
+	{
+	    int bucket = index/64;
+	    return (bits[bucket]&(1 << ((64-(index%64))-1))) != 0;
+	}
+    }
+    private static void solve(MyScanner2 s1,PrintWriter out)
+    {
+	long q=s1.nextLong();
         long s_prev = s1.nextLong(),s_curr=s_prev;
         long A = s1.nextLong();
         long B= s1.nextLong();
@@ -15,7 +47,7 @@ class CHEFQUE
         //out.println(MOD);
         BitSet b = new BitSet();
         long sum = 0;
-        //long start  =System.nanoTime();
+        long start  =System.nanoTime();
         while(q-->0)
         {
             //out.println(b);
@@ -38,10 +70,17 @@ class CHEFQUE
             s_curr = ((A*s_prev)%MOD + B%MOD) %MOD;
             s_prev = s_curr;
         }
-        //long end = System.nanoTime() - start;
-        //out.println("time "+end/1e9+" s");
+        long end = System.nanoTime() - start;
+        out.println("time "+end/1e9+" s");
         out.println(sum);
         out.close();
+    }
+    public static void main(String args[])
+    {
+        MyScanner2 s1=new MyScanner2();  
+        PrintWriter out=new PrintWriter(new BufferedOutputStream(System.out), true);  //Close the output stream after use
+        //StringBuilder sb=new StringBuilder();     
+        solve(s1,out);
     }
     static class MyScanner2 {
         BufferedReader br;
