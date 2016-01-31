@@ -11,8 +11,8 @@ public class Sockets
 
 		int n = s1.nextInt();
 		int m = s1.nextInt();
-		int k = s1.nextInt();
-		int arr[] = s1.nextIntArray(n);
+		int k = s1.nextInt();		
+		int arr[] = s1.nextIntArray(n);		
 		if(k >= m)
 			out.print("0");
 		else

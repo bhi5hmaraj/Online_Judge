@@ -108,6 +108,13 @@ public class
 		public void print(boolean i) {
 			print(Boolean.toString(i));
 		}
+		public void print(Object o){
+			print(o.toString());
+		}
+		public void println(Object o){
+			print(o.toString());
+			print('\n');
+		}
 		public void print(char i) {
 			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
 		}

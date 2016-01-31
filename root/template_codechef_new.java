@@ -2,14 +2,16 @@ import java.util.*;
 import java.io.*;
 class 
 {
-	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
+
 	/************************ SOLUTION STARTS HERE ************************/
+	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
+	
 	
 	private static void solve(FastScanner s1, FastWriter out)/* This is the actual solution */{
 		int t = s1.nextInt();
 		while(t-->0)
 		{
-
+			
 		}
 	}
 
@@ -109,6 +111,13 @@ class
 		}
 		public void print(char i) {
 			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
+		}
+		public void print(Object o){
+			print(o.toString());
+		}
+		public void println(Object o){
+			print(o.toString());
+			print('\n');
 		}
 		public void print(String s){
 			try{writer.write(s);} catch(IOException e){e.printStackTrace();}

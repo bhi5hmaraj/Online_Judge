@@ -1,3 +1,4 @@
+
 import java.util.*;
 import java.io.*;
 import java.awt.Point;
@@ -9,7 +10,7 @@ public class Constellation
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-	
+
 	private static boolean contains(Polygon poly,Point2D.Double p)
 	{
 		int x[]= poly.xpoints;
@@ -21,15 +22,15 @@ public class Constellation
 		for(Line2D.Double line:arr)
 			if(line.ptSegDist(p) == 0.0)
 				return false;
-		
+
 		return poly.contains(p);
 	}
-	
+
 	private static boolean equal(double d1 , double d2)
 	{
 		return Math.round(Math.abs(d1 - d2)) == 0.0;
 	}
-	
+
 	private static double slopeTo(Point2D.Double p1 , Point2D.Double p2)
 	{
 		if(equal(p1.getX(),p2.getX()))
@@ -42,7 +43,7 @@ public class Constellation
 			double slope = numer / denom;
 			return slope;
 		}
-		
+
 	}
 	private static Polygon formTriangle(Point2D.Double ... p)
 	{
@@ -59,7 +60,7 @@ public class Constellation
 		return poly;
 	}
 	private static void solve(FastScanner s1, FastWriter out){
-		
+
 		int n = s1.nextInt();
 		Point2D.Double input[] = new Point2D.Double[n];
 		HashMap<Point2D.Double,Integer> mp = new HashMap<>();
@@ -86,25 +87,24 @@ public class Constellation
 		double initSlope = slopeTo(input[0],sec);
 		int pt = 1;
 		Point2D.Double third = input[pt];
-		
+
 		while(equal(initSlope,slopeTo(third, input[0])))
 			third = input[pt++];
 		//System.out.println(third);
 		Polygon poly = formTriangle(input[0],sec,third);
-		
+
 		for(int i=1;i<n;i++)
 		{			
 			if(contains(poly, input[i]))
 			{				
 				third = input[i];
 				poly = formTriangle(input[0],sec,third);
-				
+
 			}
 		}
-		//System.out.println(third);
-		
+		//System.out.println(third);		
 		out.print("1 "+mp.get(sec)+" "+mp.get(third));
-		
+
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

@@ -1,5 +1,4 @@
 import java.util.*;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.io.*;
 class TRIANGCL
@@ -8,7 +7,7 @@ class TRIANGCL
 	/************************ SOLUTION STARTS HERE ************************/
 
 	static final double epsilon = Math.pow(2, -53);
-
+	
 
 	private static boolean isEqual(double a,double b)
 	{
@@ -17,7 +16,8 @@ class TRIANGCL
 	}
 
 	private static void subtask1(FastScanner s1, FastWriter out)/* This is the actual solution */{
-		int t = s1.nextInt();
+		int t = s1.nextInt(); 
+		
 		while(t-->0)
 		{
 			Point2D.Double p1 = new Point2D.Double(s1.nextInt(), s1.nextInt()); 
@@ -31,25 +31,6 @@ class TRIANGCL
 			else
 				out.println("Isosceles triangle");
 		}
-	}
-	private  static double angleBetween(Point2D.Double p1, Point2D.Double p2)
-	{
-		double xDiff = p2.x - p1.x;
-		double yDiff = p2.y - p1.y;
-		double angle = Math.atan2(yDiff, xDiff);
-
-		return angle;
-	}
-	private  static double angleBetweenFuck(Point2D.Double p1, Point2D.Double p2)
-	{
-		double xDiff = p2.x - p1.x;
-		double yDiff = p2.y - p1.y;
-		double angle = Math.atan2(yDiff, xDiff);
-		if(angle < 0){
-			angle += (Math.PI*2.0);
-		}
-
-		return angle;
 	}
 	private static boolean greater(double a,double b)
 	{
@@ -73,71 +54,20 @@ class TRIANGCL
 				sb.append("Scalene ");
 			else
 				sb.append("Isosceles ");
-			double a1 = Math.abs(angleBetween(p1, p2) - angleBetween(p1, p3));
-			double a2 = Math.abs(angleBetween(p2, p1) - angleBetween(p2, p3));
-			double a3 = Math.abs(angleBetween(p3, p1) - angleBetween(p3, p2));
-			double ninety = Math.PI / 2.0;
-
-			if(isEqual(a1, ninety) || isEqual(a2, ninety) || isEqual(a3, ninety))
-			{
+			
+			double arr[] = new double[3];
+			arr[0] = d1;
+			arr[1] = d2;
+			arr[2] = d3;
+			Arrays.sort(arr);
+			if(isEqual(arr[0]+arr[1], arr[2]))
 				sb.append("right ");
-				sb.append("triangle");
-
-				out.println(sb.toString());
-				continue;
-			}
-
-			a1 = Math.abs(angleBetweenFuck(p1, p2) - angleBetweenFuck(p1, p3));
-			a2 = Math.abs(angleBetweenFuck(p2, p1) - angleBetweenFuck(p2, p3));
-			a3 = Math.abs(angleBetweenFuck(p3, p1) - angleBetweenFuck(p3, p2));
-			/*	
-			System.out.println("before");
-			System.out.println(Math.toDegrees(a1));
-			System.out.println(Math.toDegrees(a2));
-			System.out.println(Math.toDegrees(a3));
-
-			double angles[] = new double[3];
-			angles[0] = a1;
-			angles[1] = a2;
-			angles[2] = a3;
-			outer:
-			for(int i=1;i<=2;i++)
-			{
-				angles[0] = i==1?a1:Math.PI - a1;
-				for(int j=1;j<=2;j++)
-				{
-					angles[1] = j==1?a2:Math.PI - a2;
-					for(int k=1;k<=2;k++)
-					{
-						angles[2] = k==1?a3:Math.PI - a3;
-						a1 = angles[0];
-						a2 = angles[1];
-						a2 = angles[2];
-						System.out.println("inside");
-						System.out.println(Math.toDegrees(a1));
-						System.out.println(Math.toDegrees(a2));
-						System.out.println(Math.toDegrees(a3));
-						if(isEqual(angles[0]+angles[1]+angles[2], Math.PI))
-							break outer;
-					}
-				}
-			}
-			a1 = angles[0];
-			a2 = angles[1];
-			a2 = angles[2];
-			System.out.println("after");
-			System.out.println(Math.toDegrees(a1));
-			System.out.println(Math.toDegrees(a2));
-			System.out.println(Math.toDegrees(a3));
-			 */
-
-			if(greater(a1, ninety) || greater(a2, ninety) || greater(a3, ninety))
-				sb.append("obtuse ");
-			else 
+			else if(greater(arr[0]+arr[1], arr[2]))
 				sb.append("acute ");
-
+			else
+				sb.append("obtuse ");
+			
 			sb.append("triangle");
-
 			out.println(sb.toString());
 		}
 
