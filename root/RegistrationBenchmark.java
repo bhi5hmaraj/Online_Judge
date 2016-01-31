@@ -108,13 +108,14 @@ public class RegistrationBenchmark {
     }
     public static void main(String []args) throws IOException {
 	InputReader in = new InputReader(System.in);
-	OutputWriter out = new OutputWriter(System.out);
+	//OutputWriter out = new OutputWriter(System.out);
+	PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
 	Task solver = new Task();
 	solver.solve(in, out);
 	out.close();
     }
     static class Task{
-	public void solve(InputReader s1, OutputWriter out)throws IOException{
+	public void solve(InputReader s1, PrintWriter out)throws IOException{
 	    int n=s1.readInt();
 	    String str;
 	    Integer temp;
@@ -126,14 +127,12 @@ public class RegistrationBenchmark {
 		if(temp == null)
 		{
 		    map.put(str,0);
-		    out.print("OK");
-		    out.println();
+		    out.println("OK");
 		}
 		else
 		{
 		    out.print(str);
-		    out.print((temp+1));
-		    out.println();
+		    out.println((temp+1));		    
 		    map.put(str, temp+1);
 		}
 	    }
