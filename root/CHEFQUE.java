@@ -2,6 +2,27 @@ import java.util.*;
 import java.io.*;
 class CHEFQUE       //Java Bitset runs in 0.92 s
 {
+    static class MyBitSet
+    {
+	long bits[];
+	MyBitSet()
+	{
+	    bits = new long[1<<25];
+	}
+	void set(int n,boolean f)
+	{
+	    int index = n/64;
+	    if(f == true)		
+		bits[index] |= (1L<<(n%64));
+	    else
+		bits[index] ^= (1L<<(n%64));
+	}
+	boolean get(int n)
+	{
+	    return ((bits[n/64])&(1L<<(n%64))) != 0;
+	}
+    }
+
     
     static class MyBitset
     {
@@ -43,19 +64,19 @@ class CHEFQUE       //Java Bitset runs in 0.92 s
         long s_prev = s1.nextLong(),s_curr=s_prev;
         long A = s1.nextLong();
         long B= s1.nextLong();
-        final long MOD = 4294967296L;
+        final long MOD = 4294967296L;  // (2^32)
         //out.println(MOD);
-        BitSet b = new BitSet();
+        MyBitSet b = new MyBitSet();
         long sum = 0;
         long start  =System.nanoTime();
         while(q-->0)
         {
             //out.println(b);
-            if((s_curr & 1)==1)
+            if((s_curr & 1)==1)   //Check weather s_curr is odd
             {
         	if(!b.get((int)(s_curr/2)))
         	{
-        	    b.set((int)(s_curr/2));
+        	    b.set((int)(s_curr/2),true);
         	    sum += (s_curr/2);
         	}
             }
@@ -67,7 +88,7 @@ class CHEFQUE       //Java Bitset runs in 0.92 s
         	    sum -= (s_curr/2);
         	}
             }
-            s_curr = ((A*s_prev)%MOD + B%MOD) %MOD;
+            s_curr = ((A*s_prev) + B) %MOD;
             s_prev = s_curr;
         }
         long end = System.nanoTime() - start;

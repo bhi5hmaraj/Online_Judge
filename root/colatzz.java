@@ -3,7 +3,7 @@
 import java.io.*;
 import java.util.*;
 
-class Main
+class colatzz
 {
     static String ReadLn (int maxLg)  // utility function to read from stdin
     {
@@ -31,7 +31,7 @@ class Main
 
     public static void main (String args[])  // entry point from OS
     {
-        Main myWork = new Main();  // create a dinamic instance
+        colatzz myWork = new colatzz();  // create a dinamic instance
         myWork.Begin();            // the true entry point
     }
 
@@ -42,7 +42,7 @@ class Main
         int start,end,big,temp;
         String output="";
         int a,b;
-        while ((input = Main.ReadLn (255)) != null)
+        while ((input = colatzz.ReadLn (255)) != null)
         {
           idata = new StringTokenizer (input);
           a = Integer.parseInt (idata.nextToken());

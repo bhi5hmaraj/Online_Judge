@@ -8,12 +8,15 @@ public class testing
         PrintWriter out=new PrintWriter(new BufferedOutputStream(System.out), true);
         int a=s1.nextInt();
         out.println("the number entered is"+a);
+
+        
+        Queue<Integer> q = new LinkedList<>();
+        q.add(3);
+        q.add(4);
+        System.out.println(q);
+        
+        
         out.close();
-        
-        
-        
-        
-        
         //out.close();     
     }
 }

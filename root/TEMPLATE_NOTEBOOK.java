@@ -2,14 +2,23 @@ import java.io.*;
 import java.util.*;
 class  TEMPLATE_NOTEBOOK{
     public static void main(String []args) throws IOException {
+<<<<<<< HEAD
+	FastScanner in  = new FastScanner(System.in);
+	FastWriter  out = new FastWriter(System.out);
+=======
 	FastScanner      in  = new FastScanner(System.in);
 	OutputWriter     out = new OutputWriter(System.out);   //try to enclose Bufferedwriter inside printwriter and benchmark its performance
+>>>>>>> ff407d7a2c63c6e6d9b771bc442ddf5368c19301
 	solve(in, out);
-	out.close();
 	in.close();
+	out.close();
     }
 
+<<<<<<< HEAD
+    private static void solve(FasScanner s1, FastWriter out){
+=======
     private static void solve(FastScanner s1, OutputWriter out){
+>>>>>>> ff407d7a2c63c6e6d9b771bc442ddf5368c19301
 	
 	
 	
@@ -62,32 +71,36 @@ class  TEMPLATE_NOTEBOOK{
 	   try{ reader.close(); } catch(IOException e){e.printStackTrace();}
 	}
     }
+<<<<<<< HEAD
+    static class FastWriter{
+=======
     /*
     static class OutputWriter{
+>>>>>>> ff407d7a2c63c6e6d9b771bc442ddf5368c19301
 	BufferedWriter writer;
-	public OutputWriter(OutputStream stream){
+	public FastWriter(OutputStream stream){
 	    writer = new BufferedWriter(new OutputStreamWriter(stream));
 	}
 	public void print(int i) {
-	    try{writer.write(String.valueOf(i));} catch(IOException e){e.printStackTrace();}
+	    print(Integer.toString(i));
 	}
 	public void print(long i) {
-	    try{writer.write(String.valueOf(i));} catch(IOException e){e.printStackTrace();}
+	    print(Long.toString(i));
 	}
 	public void print(double i) {
-	    try{writer.write(String.valueOf(i));} catch(IOException e){e.printStackTrace();}
+	    print(Double.toString(i));
 	}
 	public void print(boolean i) {
-	    try{writer.write(String.valueOf(i));} catch(IOException e){e.printStackTrace();}
+	    print(Boolean.toString(i));
 	}
 	public void print(char i) {
 	    try{writer.write(i);} catch(IOException e){e.printStackTrace();}
 	}
 	public void print(Object o){
-	    try{writer.write(o.toString());} catch(IOException e){e.printStackTrace();}
+	    print(o.toString());
 	}
 	public void print(Object o[]){
-	    try{writer.write(Arrays.deepToString(o));} catch(IOException e){e.printStackTrace();}
+	    print(Arrays.deepToString(o));
 	}
 	public void print(String s){
 	    try{writer.write(s);} catch(IOException e){e.printStackTrace();}
@@ -139,6 +152,13 @@ class  TEMPLATE_NOTEBOOK{
 	}
 	public void print(char []c){
 	    try{writer.write(c);} catch(IOException e){e.printStackTrace();}
+	}
+	public void print(int arr[])
+	{
+	    for (int i = 0; i < arr.length; i++) {
+		print(arr[i]);
+		print(' ');
+	    }
 	}
 	public void close(){
 	    try{writer.close();} catch(IOException e){e.printStackTrace();}

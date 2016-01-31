@@ -18,16 +18,29 @@ public class LoadBalancing  //edited from my home PC
 	int len = s1.nextInt();
 	int arr[] = s1.nextIntArray(len);
 	int balanced[] = new int[len];
-	int sum = Arrays.stream(arr).sum();
+	int sum = 0;
+	for(int a:arr)
+	    sum += a;
 	int mod = sum % len;
-	int c = (int)Math.ceil((double)sum/(double)len);
-	int f = sum/len;
+	int c = (int)Math.ceil((double)sum/(double)len);   //ceil of average
+	int f = sum/len;				   //floor of average
 	for(int i=0;i<len-mod;i++)
 	    balanced[i] = f;
 	for(int i=len-mod;i<len;i++)
 	    balanced[i] = c;
+	//System.out.println(Arrays.toString(balanced));
+
 	shuffleArray(arr);
 	Arrays.sort(arr);
+	//System.out.println(Arrays.toString(arr));
+	int time=0;
+	for (int i = 0; i < balanced.length; i++) {
+	    if(balanced[i]>=arr[i])
+		time += balanced[i]-arr[i];
+	    else
+		break;
+	}
+	out.println(time);
 	out.close();
     }
     static class MyScanner2 {

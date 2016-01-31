@@ -11,7 +11,7 @@ class ICPC3
 		int len=arr.length;
 		for(int i=0;i<len;i++)
 		{
-			sum+=arr[i];
+			sum+=(long)arr[i];
 			memo[i+1]=sum;
 		}
 	}

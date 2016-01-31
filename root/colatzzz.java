@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-class Main implements Runnable{
+class colatzzz implements Runnable{
     static int colatz(int n)
     {
         int ct=0;
@@ -37,7 +37,7 @@ class Main implements Runnable{
 
     public static void main(String args[])  // entry point from OS
     {
-        Main myWork = new Main();  // Construct the bootloader
+        colatzzz myWork = new colatzzz();  // Construct the bootloader
         myWork.run();            // execute
     }
 

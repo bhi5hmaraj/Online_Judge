@@ -1,122 +1,124 @@
 import java.io.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 public class RegistrationBenchmark {
-    static class InputReader {
-	private InputStream stream;
-	private byte[] buf = new byte[1024];
-	private int curChar;
-	private int numChars;
-	private SpaceCharFilter filter;
+    static class FastScanner{
+   	public BufferedReader reader;
+   	public StringTokenizer st;
+   	public FastScanner(InputStream stream){
+   	    reader = new BufferedReader(new InputStreamReader(stream),1024);
+   	    st = null;
+   	}
+   	public String next(){
+   	    while(st == null || !st.hasMoreTokens()){
+   		try{
+   		    String line = reader.readLine();
+   		    if(line == null) return null;
+   		    st = new StringTokenizer(line);
+   		}catch (Exception e){
+   		    throw (new RuntimeException());
+   		}
+   	    }
+   	    return st.nextToken();
+   	}
+   	public String nextLine(){
+               String str = null;
+               try {
+                   str = reader.readLine();
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
+               return str;
+           }
+   	public int nextInt(){
+   	    return Integer.parseInt(next());
+   	}
+   	public long nextLong(){
+   	    return Long.parseLong(next());
+   	}
+   	public double nextDouble(){
+   	    return Double.parseDouble(next());
+   	}
+   	int[] nextIntArray(int n) {
+   	    int[] arr = new int[n];
+   	    for (int i = 0; i < n; i++) {
+   		arr[i] = nextInt();
+   	    }
+   	    return arr;
+   	}
 
-	public InputReader(InputStream stream) {
-	    this.stream = stream;
-	}
-
-	public int read() {
-	    if(numChars == -1)
-		throw new InputMismatchException();
-	    if(curChar >= numChars) {
-		curChar = 0;
-		try {
-		    numChars = stream.read(buf);
-		} catch(IOException e) {
-		    throw new InputMismatchException();
-		}
-		if(numChars <= 0)
-		    return -1;
-	    }
-	    return buf[curChar++];
-	}
-
-	public int readInt() {
-	    int c = read();
-	    while(isSpaceChar(c))
-		c = read();
-	    int sgn = 1;
-	    if(c == '-') {
-		sgn = -1;
-		c = read();
-	    }
-	    int res = 0;
-	    do {
-		if(c < '0' || c > '9')
-		    throw new InputMismatchException();
-		res *= 10;
-		res += c - '0';
-		c = read();
-	    } while(!isSpaceChar(c));
-	    return res * sgn;
-	}
-
-	public String readString() {
-	    int c = read();
-	    while(isSpaceChar(c))
-		c = read();
-	    StringBuilder res = new StringBuilder();
-	    do {
-		if(Character.isValidCodePoint(c))
-		    res.appendCodePoint(c);
-		c = read();
-	    } while(!isSpaceChar(c));
-	    return res.toString();
-	}
-
-	public boolean isSpaceChar(int c) {
-	    if(filter != null)
-		return filter.isSpaceChar(c);
-	    return isWhitespace(c);
-	}
-
-	public static boolean isWhitespace(int c) {
-	    return c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == -1;
-	}
-
-	public String next() {
-	    return readString();
-	}
-
-	public interface SpaceCharFilter {
-	    public boolean isSpaceChar(int ch);
-
-	}
-
-    }
-
-    static class OutputWriter{
-	BufferedWriter writer;
-	public OutputWriter(OutputStream stream){
-	    writer = new BufferedWriter(new OutputStreamWriter(stream));
-	}
-	public void print(int i) throws IOException {
-	    writer.write(String.valueOf(i));
-	}
-	public void println() throws IOException {
-	    writer.write('\n');
-	}
-	public void print(String s) throws IOException {
-	    writer.write(s);
-	}
-	public void print(char []c) throws IOException {
-	    writer.write(c);
-	}
-	public void close() throws IOException {
-	    writer.close();
-	}
-    }
+   	long[] nextLongArray(int n) {
+   	    long[] arr = new long[n];
+   	    for (int i = 0; i < n; i++) {
+   		arr[i] = nextLong();
+   	    }
+   	    return arr;
+   	}
+   	public void close(){	
+   	    try{ reader.close(); } catch(IOException e){e.printStackTrace();}
+   	}
+       }
+       static class FastWriter{
+   	BufferedWriter writer;
+   	public FastWriter(OutputStream stream){
+   	    writer = new BufferedWriter(new OutputStreamWriter(stream),1024);
+   	}
+   	public void print(int i) {
+   	    print(Integer.toString(i));
+   	}
+   	public void print(long i) {
+   	    print(Long.toString(i));
+   	}
+   	public void print(double i) {
+   	    print(Double.toString(i));
+   	}
+   	public void print(boolean i) {
+   	    print(Boolean.toString(i));
+   	}
+   	public void print(char i) {
+   	    try{writer.write(i);} catch(IOException e){e.printStackTrace();}
+   	}
+   	public void print(Object o){
+   	    print(o.toString());
+   	}
+   	public void print(Object o[]){
+   	    print(Arrays.deepToString(o));
+   	}
+   	public void print(String s){
+   	    try{writer.write(s);} catch(IOException e){e.printStackTrace();}
+   	}
+   	public void println(){
+   	    try{writer.write('\n');} catch(IOException e){e.printStackTrace();}
+   	}
+   	public void print(char []c){
+   	    try{writer.write(c);} catch(IOException e){e.printStackTrace();}
+   	}
+   	public void print(int arr[])
+   	{
+   	    for (int i = 0; i < arr.length; i++) {
+   		print(arr[i]);
+   		print(' ');
+   	    }
+   	}
+   	public void close(){
+   	    try{writer.close();} catch(IOException e){e.printStackTrace();}
+   	}
+       }
+    
     public static void main(String []args) throws IOException {
-	InputReader in = new InputReader(System.in);
-	//OutputWriter out = new OutputWriter(System.out);
+	FastScanner s1 = new FastScanner(System.in);
 	PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
 	Task solver = new Task();
-	solver.solve(in, out);
+	solver.solve(s1, out);
 	out.close();
     }
     static class Task{
-	public void solve(InputReader s1, PrintWriter out)throws IOException{
-	    int n=s1.readInt();
+	public void solve(FastScanner s1, PrintWriter out)throws IOException{
+	    int n=s1.nextInt();
 	    String str;
 	    Integer temp;
 	    Map<String,Integer> map=new HashMap<String,Integer>();		
@@ -127,12 +129,13 @@ public class RegistrationBenchmark {
 		if(temp == null)
 		{
 		    map.put(str,0);
-		    out.println("OK");
+		    out.print("OK\n");
 		}
 		else
 		{
 		    out.print(str);
-		    out.println((temp+1));		    
+		    out.print((temp+1));
+		    out.println();
 		    map.put(str, temp+1);
 		}
 	    }

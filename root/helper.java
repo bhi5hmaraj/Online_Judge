@@ -1,6 +1,7 @@
-import java.util.HashMap;
-
-/*
+/***
+ * 
+ * This is my personal collections of redundant code snipets used in various problems
+ * 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -26,6 +27,22 @@ import java.util.Random;
 	}
     }
 
+        static int bigPrime[];
+    	static int N;
+    private static void preCalBigPrimeSieve() //instead of the loPrimesieve you could use bigprimeSieve which has the same performance and its a lot more intutive
+    {
+	bigPrime[1] = 1;
+	for(int i = 2;i<=N;i++)
+	{
+	    if(bigPrime[i] == 0)
+	    {
+		bigPrime[i] = i;
+		for(int j = 2*i;j<=N;j += i)
+		    bigPrime[j] = i;
+	    }
+	}
+    }
+
     static HashMap<Integer,Integer> primeFactorize(int N)   //Dependency : A sieve (loPrime[]) which contains the lowest prime divisor for each number
     {
 	HashMap<Integer,Integer> mp = new HashMap<>();
@@ -44,12 +61,22 @@ import java.util.Random;
 	return mp;
     }
 
-
-    private static int lower_bound(int arr[] , int key) //if it exists then returns the lower bound or else returns -(pos+1)
+/***
+ * 	Documentation for lower_bound()
+ *
+ * if the array = [2,4,6,7,10,12]
+ * 1. key = 1 return = -1 (u can insert to the left of this one based point)
+ * 2. key = 2 return =  0
+ * 3. key = 12 return = -6
+ * 4. key = 20 return = -7
+ * 
+ */
+/***
+        private static int lower_bound(int arr[] , int key) //if it exists then returns the lower bound or else returns -(pos+1)
     {
 	int lo = 0;
 	int hi = arr.length-1;
-	int mid =0;
+	int mid =  0;
 	int pos = -1;
 	boolean flag = false;
 	while(lo <= hi)
@@ -66,16 +93,16 @@ import java.util.Random;
 		lo = mid+1;
 	}
 	if(flag)
-	return pos;
+	    return pos;
 	else
 	{
 	    if(pos==-1)
-		pos=arr.length-1;
+		pos=arr.length;
 	    pos = -(pos+1);
 	    return pos;
 	}
     }
-    private static int upper_bound(int arr[] , int key) //if it exists then returns the lower bound or else returns -(pos+1)
+    private static int upper_bound(int arr[] , int key) //if it exists then returns the upper bound or else returns -(pos+1)
     {
 	int lo = 0;
 	int hi = arr.length-1;
@@ -107,8 +134,46 @@ import java.util.Random;
 		return lower_bound(arr, key);
 	}
     }
+		private static int lower_bound(int arr[] , int key)
+	{
+		int lo = 0;
+		int hi = arr.length-1;
+		int pos  =arr.length;
+		boolean flag = false;
+		while(lo<=hi)
+		{
+			int mid = (lo + hi) / 2;
+			if(key > arr[mid])
+			{
+				lo = mid + 1;
+			}
+			else
+			{
+				pos = mid;
+				hi = mid -1;
+				if(arr[mid] == key)
+					flag = true;
+			}
+		}
 
-
+		if(flag)
+			return pos;
+		else
+		{
+			return  -pos - 1;
+		}
+	}
+	    private static String[] substrings(String in)
+    {
+    	int len = in.length();
+    	String sub[] = new String[((len) * (len + 1)) / 2];
+    	int ptr = 0;
+    	for(int i=0;i<len;i++)		
+			for(int j=i;j<len;j++)			
+				sub[ptr++] = in.substring(j - i, j+1);
+    	
+    	return sub;
+    }
     private static String nextBiggestPermutation(String str)   //If it returns null then no permutation exists
     {
 	char ch[] = str.toCharArray();
@@ -158,7 +223,7 @@ import java.util.Random;
 	            while (less(v, a[--j]))
 	                if (j == lo) break;      // redundant since a[lo] acts as sentinel
 
-	            // check if pointers cross
+	            //   if pointers cross
 	            if (i >= j) break;
 
 	            exch(a, i, j);
@@ -196,8 +261,8 @@ import java.util.Random;
         }
         return arr[pos];
     }
-    
-    
+
+
 
 
     static  void shuffleArray(int[] array) {
@@ -210,16 +275,42 @@ import java.util.Random;
         }
     }
 
-    public static <Key> void frequency(HashMap<Key , java.lang.Integer> mp , Key k)
+	    public static <Key> void frequency(Map<Key , java.lang.Integer> mp , Key k)
+	    {
+	    	//Finds frequency of of each element of generic type Key
+	    	Integer query = mp.get(k);
+	    	if(query == null)
+	    		mp.put(k, new Integer(1));
+	    	else
+	    	{
+	    		mp.put(k, query + 1);
+	    	}
+	    }
+    static class MultiSet <T> extends HashMap<T,Integer>
     {
-    	//Finds frequency of of each element of generic type Key
-    	Integer query = mp.get(k);
-    	if(query == null)
-    		mp.put(k, new Integer(1));
-    	else
-    	{
-    		mp.put(k, query + 1);
-    	}
+	public void add(T key)
+	{
+	    Integer q = super.get(key);
+	    if(q == null)
+		super.put(key, 1);
+	    else
+		super.put(key, q+1);
+	}
+	@Override
+	public Integer remove(Object key) {
+	    Integer q = super.get(key);
+	    if(q != null)
+	    {
+		if(q == 1)
+		    super.remove(key);
+		else
+		    super.put((T)key, q-1);
+	    }
+	    else
+		throw new NullPointerException("The specified key cannot be removed from the map");
+
+	    return q;
+	}
     }
     public static HashMap<Character,Integer> freqOfChar(String str)
     {
@@ -251,6 +342,34 @@ import java.util.Random;
 	}
 	return sb.toString();
     }
+
+    static boolean canPalin(String str)
+    {
+	freq = new TreeMap<>();
+	int len = str.length();
+	for(int i=0;i<len;i++)
+	    frequency(freq, str.charAt(i));
+	if(len % 2 ==0)
+	{
+	    for(Map.Entry<Character,Integer> e:freq.entrySet())
+		if(e.getValue()%2 == 1)
+		    return false;
+
+	    return true;
+	}
+	else
+	{
+	    int ct = 0;
+	    for(Map.Entry<Character,Integer> e:freq.entrySet())
+	    {
+		if(e.getValue()%2==1)
+		    ct++;
+		if(ct>1)
+		    return false;
+	    }
+	    return true;
+	}
+    }
 	public static ArrayList<Integer> sieve(int N)     //Sieve of Erathanoses
 	{
 		ArrayList<Integer> primes = new ArrayList<>();
@@ -265,10 +384,10 @@ import java.util.Random;
 		for(int i=2;i<num.length;i++)
 			if(!num[i])
 				primes.add(i);
-		
+
 		return primes;
 	}
-	
+
 	public static boolean isPalin(String str)
 	{
 		int len = str.length();
@@ -276,7 +395,7 @@ import java.util.Random;
 		for(int i=0;i<end;i++)
 			if(str.charAt(i) != str.charAt(len-i-1))
 				return false;
-		
+
 		return true;
 	}
 	static long gcd(long big,long small)
@@ -298,7 +417,7 @@ import java.util.Random;
 		}
 		return palins;
 	}
-	
+
 	static long nCk(int n,int k)
 	{
 		if(n==k)
@@ -322,7 +441,7 @@ import java.util.Random;
 		}
 		return ans;
 	}
-	
+
 	public static boolean[] isCompositeArray(int N)     //Sieve of Erathanoses
 	{
 		boolean num[] = new boolean[N+1];
@@ -334,23 +453,23 @@ import java.util.Random;
 				for(int j=i*2;j<num.length;j+=i)
 					num[j] = true;			
 		}
-		
+
 		return num;
 	}
-	
-	
+
+
 class  MyMap <K , V > extends HashMap<K,ArrayList<V>>
 {
 	private static final long serialVersionUID = 1L;    //don't know what it is but eclipse gives me a warning 
 	public MyMap() {
 		super();
 	}
-	
+
 	@Override
 	public ArrayList<V> put(K key, ArrayList<V> value) {
 		return super.put(key, value);
 	}
-	
+
 	public void putVal(K key,V value)
 	{
 		ArrayList<V> arl = get(key);
@@ -361,11 +480,11 @@ class  MyMap <K , V > extends HashMap<K,ArrayList<V>>
 		}
 		else
 			arl.add(value);
-		
+
 		put(key,arl);
 	}
 }
-	
+
 	class FasterScanner {
     private byte[] buf = new byte[1024];
     private int tmp_curChar;
@@ -450,7 +569,7 @@ class  MyMap <K , V > extends HashMap<K,ArrayList<V>>
         } while (!isSpaceChar(c));
         return res * sgn;
     }
-       
+
     public int[] nextIntArray(int n) {
         int[] arr = new int[n];
         for (int i = 0; i < n; i++) {
@@ -458,7 +577,7 @@ class  MyMap <K , V > extends HashMap<K,ArrayList<V>>
         }
         return arr;
     }
-   
+
     public long[] nextLongArray(int n) {
         long[] arr = new long[n];
         for (int i = 0; i < n; i++) {
@@ -536,5 +655,24 @@ public static int mul(int a,int b)
 			}
 		}
 	}
-*/
-	
+
+	static class MyBitSet
+    {
+	long bits[];
+	MyBitSet()
+	{
+	    int SIZE = 1<<25;
+	    bits = new long[SIZE];
+	}
+	void toggle(int n)   //Toggles the flag in index n
+	{
+	    int index = n/64;
+	    bits[index] ^= (1L<<(n%64));
+	}
+	boolean get(int n)
+	{
+	    return ((bits[n/64])&(1L<<(n%64))) != 0;
+	}
+    }
+
+ ****/
