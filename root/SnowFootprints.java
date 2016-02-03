@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-public class WetShark
+public class SnowFootprints
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
@@ -8,28 +8,20 @@ public class WetShark
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
 
 	private static void solve(FastScanner s1, FastWriter out){
-
-		int len = s1.nextInt();
-		int arr[] = s1.nextIntArray(len);
-		long sum = 0;
-		int min = Integer.MAX_VALUE;
-		int ct = 0;
-		
-		for(int i=0;i<len;i++)
+		int n = s1.nextInt();
+		String in = s1.nextLine();
+		int l1 = in.indexOf('R');
+		int r1 = in.lastIndexOf('R');
+		int l2 = in.indexOf('L');
+		int r2 = in.lastIndexOf('L');
+		if(l1 == -1)
 		{
-			sum += (long)arr[i];
-			if(arr[i]%2==1)
-			{
-				min = Math.min(min, arr[i]);
-				ct++;
-			}
+			out.print((r2+1)+" "+(l2));
 		}
-		if(ct%2==1)
-			out.print(sum - (long)(min));
+		else if(l2 == -1)
+			out.print((l1+1)+" "+(r1+2));
 		else
-			out.print(sum);
-		
-
+			out.print((l1+1)+" "+(r1+1));
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

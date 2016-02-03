@@ -1,35 +1,62 @@
 import java.util.*;
 import java.io.*;
-public class WetShark
+public class Cutthetree
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-
-	private static void solve(FastScanner s1, FastWriter out){
-
-		int len = s1.nextInt();
-		int arr[] = s1.nextIntArray(len);
-		long sum = 0;
-		int min = Integer.MAX_VALUE;
-		int ct = 0;
-		
-		for(int i=0;i<len;i++)
+			
+	private static List<Integer>[] adj;
+	private static int V;
+	private static int val[];
+	private static int min = Integer.MAX_VALUE;
+	private static boolean marked[];
+	private static int total;
+	private static int dfs(int u)
+	{
+		marked[u] = true;
+		int curr_val = 0;
+		for(int v:adj[u])
 		{
-			sum += (long)arr[i];
-			if(arr[i]%2==1)
+			if(!marked[v])
 			{
-				min = Math.min(min, arr[i]);
-				ct++;
+				curr_val = dfs(v);
+				val[u] += curr_val;
 			}
 		}
-		if(ct%2==1)
-			out.print(sum - (long)(min));
-		else
-			out.print(sum);
-		
+		min = Math.min(min, Math.abs(total - (2 * val[u])));
+		marked[u] = false;
+		return val[u];
+	}
+	
+	
+	@SuppressWarnings("unchecked")    
+	private static void solve(FastScanner s1, FastWriter out){
 
+		V = s1.nextInt();
+		adj = (LinkedList<Integer>[])new LinkedList[V+1];
+		val = new int[V+1];
+		marked = new boolean[V+1];
+		for(int i=1;i<=V;i++)
+		{
+			val[i] = s1.nextInt();
+			total += val[i];
+		}
+		for(int i=1;i<=V-1;i++)
+		{
+			int u = s1.nextInt();
+			int v = s1.nextInt();
+			if(adj[u] == null)
+				adj[u] = new ArrayList<>();
+			if(adj[v] == null)
+				adj[v] = new ArrayList<>();
+			
+			adj[u].add(v);
+			adj[v].add(u);
+		}
+		dfs(1);
+		out.print(min);
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

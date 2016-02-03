@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-public class WetShark
+public class XorManipulation
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
@@ -9,27 +9,23 @@ public class WetShark
 
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int len = s1.nextInt();
-		int arr[] = s1.nextIntArray(len);
-		long sum = 0;
-		int min = Integer.MAX_VALUE;
-		int ct = 0;
+		long arr[] = new long[(int)(1e5 + 10)];
+		for(int i=1;i<arr.length;i++)
+			arr[i] = i ^ arr[i-1];
 		
-		for(int i=0;i<len;i++)
+		int t = s1.nextInt();
+		while(t-->0)
 		{
-			sum += (long)arr[i];
-			if(arr[i]%2==1)
-			{
-				min = Math.min(min, arr[i]);
-				ct++;
-			}
+			long l = s1.nextInt();
+			long r = s1.nextInt();
+			long ans = arr[(int)l];
+			for(long i=l+1;i<=r;i++)
+				ans ^= arr[(int)i];
+			out.println(ans);
 		}
-		if(ct%2==1)
-			out.print(sum - (long)(min));
-		else
-			out.print(sum);
 		
-
+		//System.out.println(Arrays.toString(arr));
+		
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

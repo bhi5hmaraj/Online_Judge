@@ -1,40 +1,33 @@
 import java.util.*;
 import java.io.*;
-public class WetShark
+class MaxVolume
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
-
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-
-	private static void solve(FastScanner s1, FastWriter out){
-
-		int len = s1.nextInt();
-		int arr[] = s1.nextIntArray(len);
-		long sum = 0;
-		int min = Integer.MAX_VALUE;
-		int ct = 0;
+	
+	
+	private static void solve(FastScanner s1, FastWriter out)/* This is the actual solution */{
 		
-		for(int i=0;i<len;i++)
+		int N = s1.nextInt();
+		long max = Long.MIN_VALUE;
+		for(long l=1;l<=1000;l++)
 		{
-			sum += (long)arr[i];
-			if(arr[i]%2==1)
+			for(long b=1;b<=1000;b++)
 			{
-				min = Math.min(min, arr[i]);
-				ct++;
+				long h = N -l - b;
+				if(h>=1)
+				{
+					long vol = l * b* h;
+					max = Math.max(vol, max);
+				}
 			}
 		}
-		if(ct%2==1)
-			out.print(sum - (long)(min));
-		else
-			out.print(sum);
-		
-
+		out.print(max);
 	}
 
+
 	/************************ SOLUTION ENDS HERE ************************/
-
-
 
 	/************************ TEMPLATE STARTS HERE ************************/
 
@@ -44,7 +37,7 @@ public class WetShark
 		solve(in, out);
 		in.close();
 		out.close();
-	}    
+	}
 
 	static class FastScanner{
 		public BufferedReader reader;
@@ -127,15 +120,15 @@ public class WetShark
 		public void print(boolean i) {
 			print(Boolean.toString(i));
 		}
+		public void print(char i) {
+			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
+		}
 		public void print(Object o){
 			print(o.toString());
 		}
 		public void println(Object o){
 			print(o.toString());
 			print('\n');
-		}
-		public void print(char i) {
-			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
 		}
 		public void print(String s){
 			try{writer.write(s);} catch(IOException e){e.printStackTrace();}
