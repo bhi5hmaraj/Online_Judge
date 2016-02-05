@@ -1,59 +1,36 @@
 import java.util.*;
 import java.io.*;
-public class Cutthetree
+public class RBK 
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-			
-	private static List<Integer>[] adj;
-	private static int V;
-	private static int val[];
-	private static int min = Integer.MAX_VALUE;
-	private static boolean marked[];
-	private static int total;
-	private static int dfs(int u)
+	
+	private static boolean isWhite(int r,int c)
 	{
-		marked[u] = true;
-		int curr_val = 0;
-		for(int v:adj[u])
-		{
-			if(!marked[v])
-			{
-				curr_val = dfs(v);
-				val[u] += curr_val;
-			}
-		}
-		min = Math.min(min, Math.abs(total - (2 * val[u])));
-		marked[u] = false;
-		return val[u];
+		return r % 2 == c % 2;
 	}
-	
-	
-	@SuppressWarnings("unchecked")    
 	private static void solve(FastScanner s1, FastWriter out){
 
-		V = s1.nextInt();
-		adj = (ArrayList<Integer>[])new ArrayList[V+1];
-		for(int i=0;i<=V;i++)
-			adj[i] = new ArrayList<>();
-		val = new int[V+1];
-		marked = new boolean[V+1];
-		for(int i=1;i<=V;i++)
+		int r1 = s1.nextInt();
+		int c1 = s1.nextInt();
+		int r2 = s1.nextInt();
+		int c2 = s1.nextInt();
+		
+		int rook = ((r1 == r2)||(c1 == c2))?1:2;
+		int king = Math.max(Math.abs(r1 - r2), Math.abs(c1 - c2));
+		int bishop;
+		if(((r1-c1) == (r2-c2)) || ((r1+c1) == (r2+c2)))
+			bishop = 1;
+		else
 		{
-			val[i] = s1.nextInt();
-			total += val[i];
+			if(!(isWhite(r1, c1) ^ isWhite(r2, c2)))
+				bishop = 2;
+			else
+				bishop = 0;
 		}
-		for(int i=1;i<=V-1;i++)
-		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			adj[u].add(v);
-			adj[v].add(u);
-		}
-		dfs(1);
-		out.print(min);
+		out.print(rook+" "+bishop+" "+king);
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

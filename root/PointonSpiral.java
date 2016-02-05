@@ -1,59 +1,48 @@
 import java.util.*;
 import java.io.*;
-public class Cutthetree
+import static java.lang.Math.*;
+public class PointonSpiral
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-			
-	private static List<Integer>[] adj;
-	private static int V;
-	private static int val[];
-	private static int min = Integer.MAX_VALUE;
-	private static boolean marked[];
-	private static int total;
-	private static int dfs(int u)
-	{
-		marked[u] = true;
-		int curr_val = 0;
-		for(int v:adj[u])
-		{
-			if(!marked[v])
-			{
-				curr_val = dfs(v);
-				val[u] += curr_val;
-			}
-		}
-		min = Math.min(min, Math.abs(total - (2 * val[u])));
-		marked[u] = false;
-		return val[u];
-	}
-	
-	
-	@SuppressWarnings("unchecked")    
-	private static void solve(FastScanner s1, FastWriter out){
 
-		V = s1.nextInt();
-		adj = (ArrayList<Integer>[])new ArrayList[V+1];
-		for(int i=0;i<=V;i++)
-			adj[i] = new ArrayList<>();
-		val = new int[V+1];
-		marked = new boolean[V+1];
-		for(int i=1;i<=V;i++)
+	private static void solve(FastScanner s1, FastWriter out){
+		int x = s1.nextInt();
+		int y = s1.nextInt();
+		int lox=0,loy=0;
+		int ct=1;
+		int hix=1,hiy=0;
+		int newx,newy;
+		int currx=0,curry=0;
+		while(true)
 		{
-			val[i] = s1.nextInt();
-			total += val[i];
+
+			if(((ct+1)/2) % 2 == 1)
+				newx = (ct/4)+1;
+			else
+				newx = -((ct+1)/4);
+			lox = min(currx, newx);
+			hix = max(currx, newx);
+			
+			if(((ct/2) % 2 == 0))
+				newy = -(ct / 4);
+			else
+				newy = (ct / 4) + 1;
+			
+			loy = min(curry, newy);
+			hiy = max(curry, newy);
+			//out.println("lox "+currx+" loy "+curry+" hix "+newx+" hiy "+newy+ " ct "+ct);
+			if((x>=lox && x<=hix) && (y>=loy && y<= hiy))
+			{
+				out.print(ct-1);
+				return;
+			}
+			ct++;
+			currx = newx;
+			curry = newy;
 		}
-		for(int i=1;i<=V-1;i++)
-		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			adj[u].add(v);
-			adj[v].add(u);
-		}
-		dfs(1);
-		out.print(min);
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

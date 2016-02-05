@@ -1,0 +1,5 @@
+Zeroes (hackerearth)
+Meteorite (hacerearth)
+Colliders (CF)
+Cut the tree (Hackerrank)
+Bishops (CF ~ #341)

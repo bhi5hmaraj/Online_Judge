@@ -27,7 +27,7 @@ public class XorManipulation
 		//System.out.println(Arrays.toString(arr));
 		
 	}
-
+	
 	/************************ SOLUTION ENDS HERE ************************/
 
 

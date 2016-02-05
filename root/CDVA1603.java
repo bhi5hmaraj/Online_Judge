@@ -1,64 +1,29 @@
 import java.util.*;
 import java.io.*;
-public class Cutthetree
+class CDVA1603
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
-
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-			
-	private static List<Integer>[] adj;
-	private static int V;
-	private static int val[];
-	private static int min = Integer.MAX_VALUE;
-	private static boolean marked[];
-	private static int total;
-	private static int dfs(int u)
+	static class myComparator implements Comparator<Double>
 	{
-		marked[u] = true;
-		int curr_val = 0;
-		for(int v:adj[u])
-		{
-			if(!marked[v])
-			{
-				curr_val = dfs(v);
-				val[u] += curr_val;
-			}
+		@Override
+		public int compare(Double o1, Double o2) {
+			// TODO Auto-generated method stub
+			return 0;
 		}
-		min = Math.min(min, Math.abs(total - (2 * val[u])));
-		marked[u] = false;
-		return val[u];
 	}
 	
-	
-	@SuppressWarnings("unchecked")    
-	private static void solve(FastScanner s1, FastWriter out){
+	private static void solve(FastScanner s1, FastWriter out)/* This is the actual solution */{
+		int t = s1.nextInt();
+		while(t-->0)
+		{
+			
+		}
+	}
 
-		V = s1.nextInt();
-		adj = (ArrayList<Integer>[])new ArrayList[V+1];
-		for(int i=0;i<=V;i++)
-			adj[i] = new ArrayList<>();
-		val = new int[V+1];
-		marked = new boolean[V+1];
-		for(int i=1;i<=V;i++)
-		{
-			val[i] = s1.nextInt();
-			total += val[i];
-		}
-		for(int i=1;i<=V-1;i++)
-		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			adj[u].add(v);
-			adj[v].add(u);
-		}
-		dfs(1);
-		out.print(min);
-	}
 
 	/************************ SOLUTION ENDS HERE ************************/
-
-
 
 	/************************ TEMPLATE STARTS HERE ************************/
 
@@ -68,7 +33,7 @@ public class Cutthetree
 		solve(in, out);
 		in.close();
 		out.close();
-	}    
+	}
 
 	static class FastScanner{
 		public BufferedReader reader;
@@ -151,15 +116,15 @@ public class Cutthetree
 		public void print(boolean i) {
 			print(Boolean.toString(i));
 		}
+		public void print(char i) {
+			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
+		}
 		public void print(Object o){
 			print(o.toString());
 		}
 		public void println(Object o){
 			print(o.toString());
 			print('\n');
-		}
-		public void print(char i) {
-			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
 		}
 		public void print(String s){
 			try{writer.write(s);} catch(IOException e){e.printStackTrace();}

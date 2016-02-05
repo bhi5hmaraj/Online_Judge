@@ -11,13 +11,26 @@ public class Penguin
 
 		int n = s1.nextInt();
 		int m = s1.nextInt();
-		long d = s1.nextLong();
+		long d = s1.nextInt();
 		long arr[] = new long[n*m];
 		for(int i=0;i<arr.length;i++)
-		{
-			arr[i] = s1.nextLong();
-		}
+			arr[i] = s1.nextInt();
 		
+		for(int i=1;i<arr.length;i++)
+			if(arr[i]%d != arr[i-1]%d)
+			{
+				out.print(-1);
+				return;
+			}
+		
+		Arrays.parallelSort(arr);
+		long median = arr[(arr.length-1) / 2];
+		long sum = 0;
+		for(long a:arr)
+			sum += Math.abs(a - median);
+		
+		long changesNeeded = sum / d;
+		out.print(changesNeeded);
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

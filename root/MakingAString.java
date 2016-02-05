@@ -1,59 +1,35 @@
 import java.util.*;
 import java.io.*;
-public class Cutthetree
+public class MakingAString
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-			
-	private static List<Integer>[] adj;
-	private static int V;
-	private static int val[];
-	private static int min = Integer.MAX_VALUE;
-	private static boolean marked[];
-	private static int total;
-	private static int dfs(int u)
-	{
-		marked[u] = true;
-		int curr_val = 0;
-		for(int v:adj[u])
-		{
-			if(!marked[v])
-			{
-				curr_val = dfs(v);
-				val[u] += curr_val;
-			}
-		}
-		min = Math.min(min, Math.abs(total - (2 * val[u])));
-		marked[u] = false;
-		return val[u];
-	}
-	
-	
-	@SuppressWarnings("unchecked")    
+
 	private static void solve(FastScanner s1, FastWriter out){
 
-		V = s1.nextInt();
-		adj = (ArrayList<Integer>[])new ArrayList[V+1];
-		for(int i=0;i<=V;i++)
-			adj[i] = new ArrayList<>();
-		val = new int[V+1];
-		marked = new boolean[V+1];
-		for(int i=1;i<=V;i++)
+		int n = s1.nextInt();
+		int arr[] = s1.nextIntArray(n);
+		Arrays.sort(arr);
+		HashSet<Integer> set = new HashSet<>();		
+		for(int a:arr)
 		{
-			val[i] = s1.nextInt();
-			total += val[i];
+			if(!set.contains(a))
+				set.add(a);
+			else
+			{
+				while(a>0 && set.contains(a))	
+					a--;
+				if(a>0)
+					set.add(a);
+			}
 		}
-		for(int i=1;i<=V-1;i++)
-		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			adj[u].add(v);
-			adj[v].add(u);
-		}
-		dfs(1);
-		out.print(min);
+		long len = 0;
+		for(int a:set)
+			len += (long)a;
+		//out.print(set);
+		out.print(len);
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/
