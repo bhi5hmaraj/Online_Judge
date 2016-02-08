@@ -1,88 +1,45 @@
 import java.util.*;
 import java.io.*;
-class STROPR_clean
+public class GraphandString
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
-	
-	
-	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-	static final long mod = ((long)1e9) + 7;
 
-	private static long mul(long a,long b)      /* Modular multiplication */
-	{
-		return ((a%mod)*(b%mod))%mod;
-	}
-	private static long add(long a,long b)		/* Modular addition */
-	{
-		return ((a%mod)+(b%mod))%mod;
-	}	
-	private static long modPow(long a,long b)   /* Modular exponentiation  */
-	{
-		if(b == 0L || a == 1L)
-			return 1L;
-		else if(b == 1L)
-			return a;
-		else
+	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
+
+	private static void solve(FastScanner s1, FastWriter out){
+
+		int V = s1.nextInt();
+		int E = s1.nextInt();
+		ArrayList<Integer>[] adj = (ArrayList<Integer>[])new ArrayList[V+1];
+		for(int i=1;i<=E;i++)
 		{
-			if((b & 1L) == 0L)  		//Checking whether b is even (fast)  
-				return modPow((a * a) % mod,b / 2L);
-			else
-				return (a * modPow((a * a) % mod,((b - 1L) / 2L))) % mod ;
+			int u = s1.nextInt();
+			int v = s1.nextInt();
+			if(adj[u] == null)
+				adj[u] = new ArrayList<>();
+			if(adj[v] == null)
+				adj[v] = new ArrayList<>();
+			adj[u].add(v);
+			adj[v].add(u);
 		}
-	}
-	private static long inverseMod(long n) /* Fermat's little theorem , used it to find the modular inverse of the denominator*/
-	{
-		return modPow(n,mod - 2L);
-	}
-	static void solve3(FastScanner s1, FastWriter out)/* This is the actual solution */{
+		HashSet<Integer> B = new HashSet<>();
 		
-		/*
-		 * 
-		 * Useful resources : https://nrich.maths.org/1437 
-		 * 					  https://www.hackerearth.com/notes/abhinav92003/why-output-the-answer-modulo-109-7/#c46855
-		 * 					  https://comeoncodeon.wordpress.com/tag/fermat/
-		 * 
-		 */
-		
-		
-		int t = s1.nextInt();
-		while(t-->0)
-		{			
-			int N = s1.nextInt();
-			int x = s1.nextInt();
-			long M = s1.nextLong();
-			long arr[] = s1.nextLongArray(N);
-			long coeff = 1L;
-			long ans = 0L;		
-			for(long k=-1;k<=x-2;k++)
-			{
-				if(k==-1)
-				{
-					ans = arr[x-2-(int)(k)];					
-				}
-				else
-				{
-					long nume = M + k;
-					long deno = k + 1L;
-					coeff = mul(mul(coeff,nume),inverseMod(deno));
-					ans = add(ans, mul(arr[x-2-(int)(k)], coeff));
-				}
-			}
-			out.println(ans % mod);  
-		}
 	}
+
 	/************************ SOLUTION ENDS HERE ************************/
+
+
 
 	/************************ TEMPLATE STARTS HERE ************************/
 
 	public static void main(String []args) throws IOException {
 		FastScanner in  = new FastScanner(System.in);
-		FastWriter  out = new FastWriter(System.out);	
-		solve3(in,out);		 //Atlast solve3 won the show
+		FastWriter  out = new FastWriter(System.out);
+		solve(in, out);
 		in.close();
 		out.close();
-	}
+	}    
 
 	static class FastScanner{
 		public BufferedReader reader;
@@ -90,17 +47,6 @@ class STROPR_clean
 		public FastScanner(InputStream stream){
 			reader = new BufferedReader(new InputStreamReader(stream));
 			st = null;
-		}
-		public FastScanner(String file){
-			try
-			{
-				reader = new BufferedReader(new FileReader(file));
-				st = null;
-			}
-			catch(FileNotFoundException e)
-			{
-				e.printStackTrace();
-			}
 		}
 		public String next(){
 			while(st == null || !st.hasMoreTokens()){
@@ -176,15 +122,15 @@ class STROPR_clean
 		public void print(boolean i) {
 			print(Boolean.toString(i));
 		}
-		public void print(char i) {
-			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
-		}
 		public void print(Object o){
 			print(o.toString());
 		}
 		public void println(Object o){
 			print(o.toString());
 			print('\n');
+		}
+		public void print(char i) {
+			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
 		}
 		public void print(String s){
 			try{writer.write(s);} catch(IOException e){e.printStackTrace();}

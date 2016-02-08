@@ -9,7 +9,6 @@ class MusicalSequences
 
 	private static void solve1(int n,int mod,long z,int arr[], FastWriter out)/* This is the actual solution */{
 		long sum = 0;
-		boolean isAllSame = true;
 		for(int i=1;i<=n;i++)
 		{			
 			if((i+1)%2==0)
@@ -17,7 +16,6 @@ class MusicalSequences
 			else
 				sum = (((sum) - (arr[n-i])) + mod)%mod;
 		}
-		//out.println("sum"+sum);
 		sum = sum % mod;
 		arr[n] = (int)sum;
 		long quo = z / (long)(n+1);
