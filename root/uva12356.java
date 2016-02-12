@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-public class GraphandString
+public class uva12356
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
@@ -9,34 +9,31 @@ public class GraphandString
 
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int V = s1.nextInt();
-		int E = s1.nextInt();
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];		
-		for(int i=1;i<=E;i++)
+		while(true)
 		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			if(adj[u] == null)
-				adj[u] = new HashSet<>();
-			if(adj[v] == null)
-				adj[v] = new HashSet<>();
-			adj[u].add(v);
-			adj[v].add(u);
+			int S = s1.nextInt();
+			int B = s1.nextInt();
+			if(S == 0 && B == 0)
+				return;
+			
+			TreeSet<Integer> set = new TreeSet<>();
+			for(int i=1;i<=S;i++)
+				set.add(i);
+			
+			while(B-->0)
+			{
+				int L = s1.nextInt();
+				int R = s1.nextInt();
+				Integer lower = set.lower(L);
+				Integer higher = set.higher(R);
+				for(int i=L;i<=R;i++)
+					set.remove(i);
+				out.print(lower!=null?lower:"*");
+				out.println(" "+(higher!=null?higher:"*"));
+			}
+			out.println("-");
 		}
-		HashSet<Integer> A = new HashSet<>();
-		HashSet<Integer> B = new HashSet<>();
-		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
-		{
-			if(adj[i].size() == V-1)
-				B.add(i);
-		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!B.contains(i))			
-				A.add(i);			
-		}
-		
+
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/
@@ -48,7 +45,7 @@ public class GraphandString
 	public static void main(String []args) throws IOException {
 		FastScanner in  = new FastScanner(System.in);
 		FastWriter  out = new FastWriter(System.out);
-		solve(in, out);
+		solve(in, out);	
 		in.close();
 		out.close();
 	}    

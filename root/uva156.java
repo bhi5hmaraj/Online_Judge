@@ -1,42 +1,71 @@
 import java.util.*;
 import java.io.*;
-public class GraphandString
+public class uva156
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-
+    public static TreeMap<Character,Integer> freqOfChar(String str)
+    {
+	TreeMap<Character,Integer> mp = new TreeMap<>();
+	for(int i=0,len=str.length();i<len;i++)
+	{
+	    char k = str.charAt(i);
+	    	Integer query = mp.get(k);
+	    	if(query == null)
+	    		mp.put(k, new Integer(1));
+	    	else
+	    	{
+	    		mp.put(k, query + 1);
+	    	}
+	}
+	return mp;
+    }
+	private static String myHashCode(String str)
+	{
+		TreeMap<Character,Integer> freq = freqOfChar(str);
+		StringBuilder sb = new StringBuilder();
+		for (Map.Entry<Character,Integer> e : freq.entrySet()) 
+		{
+			sb.append(e.getKey()+""+e.getValue());
+		}
+		return sb.toString();
+	}
+    public static <Key> void frequency(Map<Key , java.lang.Integer> mp , Key k)
+    {
+    	//Finds frequency of of each element of generic type Key
+    	Integer query = mp.get(k);
+    	if(query == null)
+    		mp.put(k, new Integer(1));
+    	else	    	
+    		mp.put(k, query + 1);	    	
+    }
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int V = s1.nextInt();
-		int E = s1.nextInt();
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];		
-		for(int i=1;i<=E;i++)
+		HashMap<String,Integer> freq = new HashMap<>();
+		HashMap<String,String> actual = new HashMap<>();
+		while(true)
 		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			if(adj[u] == null)
-				adj[u] = new HashSet<>();
-			if(adj[v] == null)
-				adj[v] = new HashSet<>();
-			adj[u].add(v);
-			adj[v].add(u);
+			String str = s1.next();
+			if(str.length() == 1 && str.equals("#"))
+				break;
+			if(!str.equals(" "))
+			{
+				String low = myHashCode(str.toLowerCase());
+				frequency(freq, low);
+				actual.put(low, str);
+			}
 		}
-		HashSet<Integer> A = new HashSet<>();
-		HashSet<Integer> B = new HashSet<>();
-		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
+		//out.print(freq);
+		TreeSet<String> set = new TreeSet<>();
+		for (Map.Entry<String,Integer> e : freq.entrySet()) 
 		{
-			if(adj[i].size() == V-1)
-				B.add(i);
+			int f = e.getValue().intValue();
+			if(f == 1)
+				set.add(actual.get(e.getKey()));
 		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!B.contains(i))			
-				A.add(i);			
-		}
-		
+		for(String str:set)out.println(str);
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

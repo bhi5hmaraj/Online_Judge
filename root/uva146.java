@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-public class GraphandString
+public class uva146
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
@@ -9,34 +9,50 @@ public class GraphandString
 
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int V = s1.nextInt();
-		int E = s1.nextInt();
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];		
-		for(int i=1;i<=E;i++)
+		while(true)
 		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			if(adj[u] == null)
-				adj[u] = new HashSet<>();
-			if(adj[v] == null)
-				adj[v] = new HashSet<>();
-			adj[u].add(v);
-			adj[v].add(u);
+			char arr[] = s1.nextLine().toCharArray();
+			if(arr.length == 1 && arr[0] == '#')
+				return;
+			int index  = 0;
+			if(arr.length == 1)
+				out.println("No Successor");
+			else
+			{
+				boolean flag = false;
+
+				for(int i= arr.length-1;i>=1;i--)
+				{
+					if(arr[i] > arr[i-1])
+					{
+						flag = true;
+						index = i;
+						break;
+					}
+				}
+				if(flag)
+				{
+					char ch = arr[index-1];
+					int j = 0;
+					for(int i=arr.length-1;i>=index;i--)
+						if(arr[i] > ch)
+						{
+							j = i;
+							break;
+						}
+					
+					arr[index-1] = arr[j];
+					arr[j] = ch;
+					Arrays.sort(arr, index, arr.length);
+					for(char c:arr)
+						out.print(c);
+					out.println();
+				}
+				else
+					out.println("No Successor");
+			}
 		}
-		HashSet<Integer> A = new HashSet<>();
-		HashSet<Integer> B = new HashSet<>();
-		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
-		{
-			if(adj[i].size() == V-1)
-				B.add(i);
-		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!B.contains(i))			
-				A.add(i);			
-		}
-		
+
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

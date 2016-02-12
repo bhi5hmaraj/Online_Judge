@@ -1,57 +1,90 @@
 import java.util.*;
 import java.io.*;
-public class GraphandString
+class SEATL
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
-
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
+    public static <Key> void frequency(Map<Key , java.lang.Integer> mp , Key k)
+    {
+    	//Finds frequency of of each element of generic type Key
+    	Integer query = mp.get(k);
+    	if(query == null)
+    		mp.put(k, new Integer(1));
+    	else
+    	{
+    		mp.put(k, query + 1);
+    	}
+    }
+	
+	private static void solve(FastScanner s1, FastWriter out)/* This is the actual solution */{
+		int t = s1.nextInt();
+		while(t-->0)
+		{
+			int N = s1.nextInt();
+			int M = s1.nextInt();
+			int max = Integer.MIN_VALUE;
+			int arr[][] = new int[N][M];
+			HashMap<Integer,Integer>[] row =(HashMap<Integer,Integer>[]) new HashMap[N];
+			HashMap<Integer,Integer>[] col =(HashMap<Integer,Integer>[]) new HashMap[M];
 
-	private static void solve(FastScanner s1, FastWriter out){
-
-		int V = s1.nextInt();
-		int E = s1.nextInt();
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];		
-		for(int i=1;i<=E;i++)
-		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			if(adj[u] == null)
-				adj[u] = new HashSet<>();
-			if(adj[v] == null)
-				adj[v] = new HashSet<>();
-			adj[u].add(v);
-			adj[v].add(u);
+			for(int i=0;i<N;i++)
+				for(int j=0;j<M;j++)
+				{
+					arr[i][j] = s1.nextInt();
+					if(row[i] == null)
+						row[i] = new HashMap<>();
+					if(col[j] == null)
+						col[j] = new HashMap<>();
+					frequency(row[i], arr[i][j]);
+					frequency(col[j], arr[i][j]);					
+				}
+			//out.println(Arrays.deepToString(row));
+			//out.println(Arrays.deepToString(col));
+			for(int i=0;i<N;i++)
+			{				
+				for(int j=0;j<M;j++)
+				{
+					HashMap<Integer,Integer> freq = new HashMap<>(row[i]);
+					freq.put(arr[i][j], freq.get(arr[i][j]) - 1);
+					for (Map.Entry<Integer,Integer> e : col[j].entrySet()) 
+					{
+						int key = e.getKey();
+						int val = e.getValue();
+						Integer query = freq.get(key);				    
+				    	if(query == null)
+				    		freq.put(key, val);
+				    	else				    	
+				    		freq.put(key, query + val);				    	
+					}
+					//out.println("i = "+i+" j = "+j+" freq "+freq);
+					for (Map.Entry<Integer,Integer> e : freq.entrySet()) 
+					{
+						max = Math.max(max, e.getValue());
+					}
+				}
+			}
+			out.println(max);
 		}
-		HashSet<Integer> A = new HashSet<>();
-		HashSet<Integer> B = new HashSet<>();
-		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
-		{
-			if(adj[i].size() == V-1)
-				B.add(i);
-		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!B.contains(i))			
-				A.add(i);			
-		}
-		
 	}
 
+
 	/************************ SOLUTION ENDS HERE ************************/
-
-
 
 	/************************ TEMPLATE STARTS HERE ************************/
 
 	public static void main(String []args) throws IOException {
 		FastScanner in  = new FastScanner(System.in);
+		//String input  = "/home/bhishmaraj/Documents/OJ/Java/input.txt";		
+		//FastScanner in  = new FastScanner(input);
 		FastWriter  out = new FastWriter(System.out);
+		//long start = System.nanoTime();		
 		solve(in, out);
+		//long stop = System.nanoTime();
+		//System.err.println("Time : "+((stop-start)/1e9) + " s");
 		in.close();
 		out.close();
-	}    
+	}
 
 	static class FastScanner{
 		public BufferedReader reader;
@@ -59,6 +92,17 @@ public class GraphandString
 		public FastScanner(InputStream stream){
 			reader = new BufferedReader(new InputStreamReader(stream));
 			st = null;
+		}
+		public FastScanner(String file){
+			try
+			{
+				reader = new BufferedReader(new FileReader(file));
+				st = null;
+			}
+			catch(FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		public String next(){
 			while(st == null || !st.hasMoreTokens()){
@@ -134,15 +178,15 @@ public class GraphandString
 		public void print(boolean i) {
 			print(Boolean.toString(i));
 		}
+		public void print(char i) {
+			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
+		}
 		public void print(Object o){
 			print(o.toString());
 		}
 		public void println(Object o){
 			print(o.toString());
 			print('\n');
-		}
-		public void print(char i) {
-			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
 		}
 		public void print(String s){
 			try{writer.write(s);} catch(IOException e){e.printStackTrace();}

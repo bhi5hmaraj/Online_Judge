@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-public class GraphandString
+public class uva_11988
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
@@ -9,34 +9,50 @@ public class GraphandString
 
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int V = s1.nextInt();
-		int E = s1.nextInt();
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];		
-		for(int i=1;i<=E;i++)
+		String in ;
+		while((in = s1.nextLine()) /*!= null*/ .length() != 0)
 		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			if(adj[u] == null)
-				adj[u] = new HashSet<>();
-			if(adj[v] == null)
-				adj[v] = new HashSet<>();
-			adj[u].add(v);
-			adj[v].add(u);
+			in = in.trim();
+			StringBuilder sb = new StringBuilder();
+			LinkedList<StringBuilder> list = new LinkedList<>();
+			boolean isLast = true;
+			for(int i=0,len=in.length();i<len;i++)
+			{
+				char ch = in.charAt(i);
+				
+				if(ch == '[' || ch == ']')
+				{
+					if(sb.length() != 0)
+					{
+						if(isLast)
+							list.addLast(sb);
+						else
+							list.addFirst(sb);
+					}
+					if(ch == '[')
+						isLast = false;
+					else
+						isLast = true;
+					
+					sb = new StringBuilder();
+					continue;
+				}
+				sb.append(ch);
+			}
+			
+			if(sb.length() != 0)
+			{
+				if(isLast)
+					list.addLast(sb);
+				else
+					list.addFirst(sb);
+			}
+			for(StringBuilder s:list)
+				out.print(s.toString());
+			
+			out.println();
 		}
-		HashSet<Integer> A = new HashSet<>();
-		HashSet<Integer> B = new HashSet<>();
-		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
-		{
-			if(adj[i].size() == V-1)
-				B.add(i);
-		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!B.contains(i))			
-				A.add(i);			
-		}
-		
+
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

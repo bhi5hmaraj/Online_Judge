@@ -1,44 +1,111 @@
 import java.util.*;
 import java.io.*;
-public class GraphandString
+public class uva10107
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
 
-	private static void solve(FastScanner s1, FastWriter out){
-
-		int V = s1.nextInt();
-		int E = s1.nextInt();
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];		
-		for(int i=1;i<=E;i++)
-		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			if(adj[u] == null)
-				adj[u] = new HashSet<>();
-			if(adj[v] == null)
-				adj[v] = new HashSet<>();
-			adj[u].add(v);
-			adj[v].add(u);
+	private static void solve1(FastScanner s1, FastWriter out){
+		String in;
+		ArrayList<Long> arl = new ArrayList<>();
+		while((in = s1.nextLine()) != null)
+		{			
+			in = in.trim();
+			long n = Long.parseLong(in);
+			arl.add(n);
+			Collections.sort(arl);
+			int len = arl.size();
+			long median = 0;
+			if(len % 2 == 1)
+				median = arl.get(len / 2);
+			else
+				median = (long)(arl.get(len / 2) + (long)arl.get((len/2)-1)) / 2;
+			out.println(median);
 		}
-		HashSet<Integer> A = new HashSet<>();
-		HashSet<Integer> B = new HashSet<>();
-		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
-		{
-			if(adj[i].size() == V-1)
-				B.add(i);
-		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!B.contains(i))			
-				A.add(i);			
-		}
-		
 	}
-
+	private static void solve2(FastScanner s1, FastWriter out){
+		String in;
+		PriorityQueue<Integer> left = new PriorityQueue<>(new Comparator<Integer>() {
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return o2 - o1;
+			}
+		});
+		PriorityQueue<Integer> right = new PriorityQueue<>();		
+		while((in = s1.nextLine()) != null)
+		{
+			in = in.trim();
+			int n = Integer.parseInt(in);
+			int l_size = left.size();
+			int r_size = right.size();
+			if(l_size == 0)
+			{
+				left.add(n);				
+			}
+			else if(r_size == 0)
+			{
+				int l_max = left.poll();
+				if(n < l_max)
+				{
+					right.add(l_max);
+					left.add(n);
+				}
+				else
+				{
+					right.add(n);
+					left.add(l_max);
+				}
+			}
+			else
+			{
+				if(l_size <= r_size)
+				{
+					int r_min = right.poll();
+					if(n > r_min)
+					{
+						left.add(r_min);
+						right.add(n);
+					}
+					else
+					{
+						left.add(n);
+						right.add(r_min);
+					}
+				}
+				else
+				{
+					int l_max = left.poll();
+					if(n < l_max)
+					{
+						right.add(l_max);
+						left.add(n);
+					}
+					else
+					{
+						right.add(n);
+						left.add(l_max);
+					}
+				}
+			}
+			l_size = left.size();
+			r_size = right.size();
+			//out.println("left "+left);
+			//out.println("right "+right);
+			if(l_size > r_size)
+				out.println(left.peek());
+			else if(r_size > l_size)
+				out.println(right.peek());
+			else
+			{
+				long l = left.peek();
+				long r = right.peek();
+				long median = (l + r) / 2L;
+				out.println(median);
+			}
+		}
+	}
 	/************************ SOLUTION ENDS HERE ************************/
 
 
@@ -48,7 +115,7 @@ public class GraphandString
 	public static void main(String []args) throws IOException {
 		FastScanner in  = new FastScanner(System.in);
 		FastWriter  out = new FastWriter(System.out);
-		solve(in, out);
+		solve2(in, out);
 		in.close();
 		out.close();
 	}    

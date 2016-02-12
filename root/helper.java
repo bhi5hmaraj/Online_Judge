@@ -281,10 +281,8 @@ import java.util.Random;
 	    	Integer query = mp.get(k);
 	    	if(query == null)
 	    		mp.put(k, new Integer(1));
-	    	else
-	    	{
-	    		mp.put(k, query + 1);
-	    	}
+	    	else	    	
+	    		mp.put(k, query + 1);	    	
 	    }
     static class MultiSet <T> extends HashMap<T,Integer>
     {

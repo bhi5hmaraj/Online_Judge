@@ -1,42 +1,37 @@
 import java.util.*;
 import java.io.*;
-public class GraphandString
+public class VotinginSiruseri
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-
+    public static <Key> void frequency(Map<Key , java.lang.Integer> mp , Key k)
+    {
+    	//Finds frequency of of each element of generic type Key
+    	Integer query = mp.get(k);
+    	if(query == null)
+    		mp.put(k, new Integer(1));
+    	else    	
+    		mp.put(k, query + 1);    	
+    }
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int V = s1.nextInt();
-		int E = s1.nextInt();
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];		
-		for(int i=1;i<=E;i++)
+		int lengths[] = s1.nextIntArray(5);
+		HashMap<Integer,Integer> freq = new HashMap<>();
+		for(int len:lengths)
 		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			if(adj[u] == null)
-				adj[u] = new HashSet<>();
-			if(adj[v] == null)
-				adj[v] = new HashSet<>();
-			adj[u].add(v);
-			adj[v].add(u);
+			while(len-->0)
+				frequency(freq, s1.nextInt());
 		}
-		HashSet<Integer> A = new HashSet<>();
-		HashSet<Integer> B = new HashSet<>();
-		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
+		int ct = 0;
+		for (Map.Entry<Integer,Integer> e : freq.entrySet()) 
 		{
-			if(adj[i].size() == V-1)
-				B.add(i);
+			int f = e.getValue().intValue();
+			if(f >= 3)
+				ct++;
 		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!B.contains(i))			
-				A.add(i);			
-		}
-		
+		out.print(ct);
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

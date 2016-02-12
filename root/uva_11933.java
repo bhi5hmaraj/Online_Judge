@@ -1,42 +1,38 @@
 import java.util.*;
 import java.io.*;
-public class GraphandString
+public class uva_11933
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-
+	
+	
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int V = s1.nextInt();
-		int E = s1.nextInt();
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];		
-		for(int i=1;i<=E;i++)
+		int n;
+		while(( n = s1.nextInt()) != 0)
 		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			if(adj[u] == null)
-				adj[u] = new HashSet<>();
-			if(adj[v] == null)
-				adj[v] = new HashSet<>();
-			adj[u].add(v);
-			adj[v].add(u);
+			int i = 0;
+			int ct = 1;
+			long a=0,b=0;
+			while(n != 0)
+			{
+				if((n & 1) == 1)
+				{
+					if(ct % 2 == 0)
+						b = b | (1 << i);
+					else
+						a = a | (1 << i);
+					
+					ct++;
+				}
+				i++;
+				n >>= 1;
+			}
+			out.println(a + " " + b);
 		}
-		HashSet<Integer> A = new HashSet<>();
-		HashSet<Integer> B = new HashSet<>();
-		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
-		{
-			if(adj[i].size() == V-1)
-				B.add(i);
-		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!B.contains(i))			
-				A.add(i);			
-		}
-		
+
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/

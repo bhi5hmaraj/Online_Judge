@@ -1,42 +1,95 @@
 import java.util.*;
 import java.io.*;
-public class GraphandString
+public class uva_10258
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-
+	
+	static class Contestant implements Comparable<Contestant>
+	{
+		boolean isAC[];
+		int penalty[];
+		int totalPenalty;
+		int numOfSolved;
+		int id;
+		public Contestant(int id) {
+			this.id = id;
+			isAC = new boolean[11];
+			penalty = new int[11];
+			totalPenalty = 0;
+			numOfSolved = 0;
+		}
+		@Override
+		public int compareTo(Contestant that) {
+			if(this.numOfSolved != that.numOfSolved)
+				return that.numOfSolved - this.numOfSolved;
+			else
+			{
+				if(this.totalPenalty != that.totalPenalty)
+					return this.totalPenalty - that.totalPenalty;
+				else
+					return this.id - that.id;
+			}
+		}
+	}
+	
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int V = s1.nextInt();
-		int E = s1.nextInt();
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];		
-		for(int i=1;i<=E;i++)
+		int t = s1.nextInt();
+		s1.nextLine();
+		while(t-->0)
 		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			if(adj[u] == null)
-				adj[u] = new HashSet<>();
-			if(adj[v] == null)
-				adj[v] = new HashSet<>();
-			adj[u].add(v);
-			adj[v].add(u);
+			Contestant arr[] = new Contestant[101];
+			String in = s1.nextLine();
+			while((in != null) && (in.length() != 0))
+			{
+				in = in.trim();
+				Scanner scan = new Scanner(in);
+				int id = scan.nextInt();
+				int prob = scan.nextInt();
+				int time = scan.nextInt();
+				char verdict = scan.next().charAt(0);
+				scan.close();
+				if(arr[id] == null)
+					arr[id] = new Contestant(id);
+				switch(verdict)
+				{
+				case 'R':
+				case 'U':
+				case 'E':
+					in = s1.nextLine();
+					continue;
+				case 'I':
+					if(!arr[id].isAC[prob])
+					{
+						arr[id].penalty[prob] += 20;
+					}
+					break;
+				case 'C':
+					if(!arr[id].isAC[prob])
+					{
+						arr[id].isAC[prob] = true;
+						arr[id].numOfSolved++;
+						arr[id].totalPenalty += (arr[id].penalty[prob] + time);
+						break;
+					}
+				}
+				in = s1.nextLine();
+			}
+			ArrayList<Contestant> arl = new ArrayList<>();
+			for(Contestant con : arr)
+				if(con != null)
+					arl.add(con);
+			
+			Collections.sort(arl);
+			for(Contestant con:arl)
+				out.println(con.id + " " + con.numOfSolved + " " + con.totalPenalty);			
+			if(t != 0)
+				out.println();
 		}
-		HashSet<Integer> A = new HashSet<>();
-		HashSet<Integer> B = new HashSet<>();
-		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
-		{
-			if(adj[i].size() == V-1)
-				B.add(i);
-		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!B.contains(i))			
-				A.add(i);			
-		}
-		
+
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/
