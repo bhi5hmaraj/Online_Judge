@@ -1,140 +1,51 @@
 import java.util.*;
 import java.io.*;
-public class GraphandString
+class K16G
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
-
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-
-	private static void solve(FastScanner s1, FastWriter out){
-
-		int V = s1.nextInt();
-		int E = s1.nextInt();
-		if(E == 0)
+	
+	private static HashSet<Long> depth(long node, long k)
+	{
+		HashSet<Long> set = new HashSet<>();
+		while(node != 0)
 		{
-			if(V == 1 || V == 2)
-			{
-				out.println("Yes");
-				out.print((V==1)?"a":"ac");
-			}
-			else
-				out.print("No");
-			return;
-
+			set.add(node);
+			node /= k;
 		}
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];	
-		for(int i=1;i<=V;i++)
-			adj[i] = new HashSet<>();
-		for(int i=1;i<=E;i++)
-		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			adj[u].add(v);
-			adj[v].add(u);
-		}
-		HashSet<Integer> A = new HashSet<>();
-		HashSet<Integer> B = new HashSet<>();
-		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
-		{
-			if(adj[i].size() == V-1)
-				B.add(i);
-		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!B.contains(i))			
-			{
-				A.add(i);
-				for(int v:adj[i])
-					if(!B.contains(v))
-						A.add(v);
-
-				break;
-			}
-		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!A.contains(i) && !B.contains(i))
-				C.add(i);
-		}
-		/*
-		out.println("A "+A);
-		out.println("B "+B);
-		out.println("C "+C);
-		System.out.println(Arrays.toString(adj));
-		*/
-		int sA = A.size();
-		int sB = B.size();
-		int sC = C.size();
-		for(int a:A)
-		{
-			int needed = sA + sB - 1;
-			for(int v:adj[a])
-			{
-				if(A.contains(v) || B.contains(v))
-					needed--;
-				if(C.contains(v))
-				{
-					out.print("No");
-					return;
-				}
-			}
-			if(needed != 0)
-			{
-				out.print("No");
-				return;
-			}
-		}
-		for(int b:B)
-		{
-			int needed = sA + sB + sC - 1;
-			for(int v:adj[b])
-			{
-				if(A.contains(v) || B.contains(v) || C.contains(v))
-					needed--;					
-			}
-			if(needed != 0)
-			{
-				out.print("No");
-				return;
-			}
-		}
-		for(int c:C)
-		{
-			int needed = sC + sB - 1;
-			for(int v:adj[c])
-			{
-				if(C.contains(v) || B.contains(v))
-					needed--;
-				if(A.contains(v))
-				{						
-					out.print("No");
-					return;						
-				}
-			}
-			if(needed != 0)
-			{
-				out.print("No");
-				return;
-			}
-		}
-
-		out.println("Yes");
-		StringBuilder sb = new StringBuilder();
-		sb.setLength(V);
-		for(int i:A)
-			sb.setCharAt(i-1, 'a');
-		for(int i:B)
-			sb.setCharAt(i-1, 'b');
-		for(int i:C)
-			sb.setCharAt(i-1, 'c');
-		out.print(sb);
+		return set;
 	}
-
+	private static int distTo(long a,long b,long k)
+	{
+		int ct = 0;
+		while(a != b)
+		{
+			a /= k;
+			ct++;
+		}
+		return ct;
+	}
+	private static void solve(FastScanner s1, FastWriter out)/* This is the actual solution */{
+		long n = s1.nextLong();
+		long k = s1.nextLong();
+		int q = s1.nextInt();
+		while(q-->0)
+		{
+			long u = s1.nextLong();
+			long v = s1.nextLong();
+			HashSet<Long> set1 = depth(u, k);
+			HashSet<Long> set2 = depth(v, k);
+			long max = Long.MIN_VALUE;
+			for(long l:set1)
+				if(set2.contains(l))
+					max = Math.max(max, l);
+			
+			int totalDist = distTo(u, max, k) + distTo(v, max, k);
+			out.println(totalDist);
+		}
+	}
 	/************************ SOLUTION ENDS HERE ************************/
-
-
 
 	/************************ TEMPLATE STARTS HERE ************************/
 
@@ -144,7 +55,7 @@ public class GraphandString
 		solve(in, out);
 		in.close();
 		out.close();
-	}    
+	}
 
 	static class FastScanner{
 		public BufferedReader reader;
@@ -227,15 +138,15 @@ public class GraphandString
 		public void print(boolean i) {
 			print(Boolean.toString(i));
 		}
+		public void print(char i) {
+			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
+		}
 		public void print(Object o){
 			print(o.toString());
 		}
 		public void println(Object o){
 			print(o.toString());
 			print('\n');
-		}
-		public void print(char i) {
-			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
 		}
 		public void print(String s){
 			try{writer.write(s);} catch(IOException e){e.printStackTrace();}

@@ -1,135 +1,50 @@
 import java.util.*;
 import java.io.*;
-public class GraphandString
+public class uva_10226
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-
+    public static <Key> void frequency(Map<Key , java.lang.Integer> mp , Key k)
+    {
+    	//Finds frequency of of each element of generic type Key
+    	Integer query = mp.get(k);
+    	if(query == null)
+    		mp.put(k, new Integer(1));
+    	else	    	
+    		mp.put(k, query + 1);	    	
+    }
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int V = s1.nextInt();
-		int E = s1.nextInt();
-		if(E == 0)
+		int t = s1.nextInt();
+		boolean first = true;
+		s1.nextLine();
+		while(t-->0)
 		{
-			if(V == 1 || V == 2)
+			String in;
+			int total = 0;
+			TreeMap<String,Integer> freq = new TreeMap<>();
+			while((in = s1.nextLine()) != null)
 			{
-				out.println("Yes");
-				out.print((V==1)?"a":"ac");
+				if(in.isEmpty())
+					break;
+				
+				frequency(freq, in);
+				total++;
 			}
+			if (first)
+				first = false;
 			else
-				out.print("No");
-			return;
-
-		}
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];	
-		for(int i=1;i<=V;i++)
-			adj[i] = new HashSet<>();
-		for(int i=1;i<=E;i++)
-		{
-			int u = s1.nextInt();
-			int v = s1.nextInt();
-			adj[u].add(v);
-			adj[v].add(u);
-		}
-		HashSet<Integer> A = new HashSet<>();
-		HashSet<Integer> B = new HashSet<>();
-		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
-		{
-			if(adj[i].size() == V-1)
-				B.add(i);
-		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!B.contains(i))			
+				out.println();
+			
+			for (Map.Entry<String ,Integer> e : freq.entrySet()) 
 			{
-				A.add(i);
-				for(int v:adj[i])
-					if(!B.contains(v))
-						A.add(v);
-
-				break;
-			}
-		}
-		for(int i=1;i<=V;i++)
-		{
-			if(!A.contains(i) && !B.contains(i))
-				C.add(i);
-		}
-		/*
-		out.println("A "+A);
-		out.println("B "+B);
-		out.println("C "+C);
-		System.out.println(Arrays.toString(adj));
-		*/
-		int sA = A.size();
-		int sB = B.size();
-		int sC = C.size();
-		for(int a:A)
-		{
-			int needed = sA + sB - 1;
-			for(int v:adj[a])
-			{
-				if(A.contains(v) || B.contains(v))
-					needed--;
-				if(C.contains(v))
-				{
-					out.print("No");
-					return;
-				}
-			}
-			if(needed != 0)
-			{
-				out.print("No");
-				return;
-			}
-		}
-		for(int b:B)
-		{
-			int needed = sA + sB + sC - 1;
-			for(int v:adj[b])
-			{
-				if(A.contains(v) || B.contains(v) || C.contains(v))
-					needed--;					
-			}
-			if(needed != 0)
-			{
-				out.print("No");
-				return;
-			}
-		}
-		for(int c:C)
-		{
-			int needed = sC + sB - 1;
-			for(int v:adj[c])
-			{
-				if(C.contains(v) || B.contains(v))
-					needed--;
-				if(A.contains(v))
-				{						
-					out.print("No");
-					return;						
-				}
-			}
-			if(needed != 0)
-			{
-				out.print("No");
-				return;
+				out.print(String.format( "%s %.4f%n", 
+						e.getKey(), 100 * (double)e.getValue() / (double)total));
 			}
 		}
 
-		out.println("Yes");
-		StringBuilder sb = new StringBuilder();
-		sb.setLength(V);
-		for(int i:A)
-			sb.setCharAt(i-1, 'a');
-		for(int i:B)
-			sb.setCharAt(i-1, 'b');
-		for(int i:C)
-			sb.setCharAt(i-1, 'c');
-		out.print(sb);
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/
