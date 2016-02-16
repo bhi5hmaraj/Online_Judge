@@ -1,54 +1,88 @@
 import java.util.*;
 import java.io.*;
-public class Unary
+class STROPR_clean
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
-
+	
+	
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
+	static final long mod = ((long)1e9) + 7L;
 
-	private static void solve(FastScanner s1, FastWriter out){
-
-		HashMap<Character,char[]> mp = new HashMap<>();
-		mp.put('>', "0001".toCharArray());
-		mp.put('<', "1001".toCharArray());
-		mp.put('+', "0101".toCharArray());
-		mp.put('-', "1101".toCharArray());
-		mp.put('.', "0011".toCharArray());
-		mp.put(',', "1011".toCharArray());
-		mp.put('[', "0111".toCharArray());
-		mp.put(']', "1111".toCharArray());
-		final long MOD = (int)(1e6) + 3;
-		
-		String in = s1.nextLine();
-		
-		long curr = 1 , ans = 0;
-		for(int i = in.length() - 1;i>=0;i--)
-		{
-			for(char ch:mp.get(in.charAt(i)))
-			{
-				if(ch == '1')
-					ans = ((ans%MOD) + (curr%MOD)) %MOD;
-				
-				curr = (curr * 2)%MOD;
-			}
-		}
-		out.print(ans);
+	private static long mul(long a,long b)      /* Modular multiplication */
+	{
+		return ((a%mod)*(b%mod))%mod;
 	}
-
+	private static long add(long a,long b)		/* Modular addition */
+	{
+		return ((a%mod)+(b%mod))%mod;
+	}	
+	private static long modPow(long a,long b)   /* Modular exponentiation  */
+	{
+		if(b == 0L || a == 1L)
+			return 1L;
+		else if(b == 1L)
+			return a;
+		else
+		{
+			if((b & 1L) == 0L)  		//Checking whether b is even (fast)  
+				return modPow((a * a) % mod,b / 2L);
+			else
+				return (a * modPow((a * a) % mod,((b - 1L) / 2L))) % mod ;
+		}
+	}
+	private static long inverseMod(long n) /* Fermat's little theorem , used it to find the modular inverse of the denominator*/
+	{
+		return modPow(n,mod - 2L);
+	}
+	static void solve3(FastScanner s1, FastWriter out)/* This is the actual solution */{
+		
+		/*
+		 * 
+		 * Useful resources : https://nrich.maths.org/1437 
+		 * 					  https://www.hackerearth.com/notes/abhinav92003/why-output-the-answer-modulo-109-7/#c46855
+		 * 					  https://comeoncodeon.wordpress.com/tag/fermat/
+		 * 
+		 */
+		
+		
+		int t = s1.nextInt();
+		while(t-->0)
+		{			
+			int N = s1.nextInt();
+			int x = s1.nextInt();
+			long M = s1.nextLong();
+			long arr[] = s1.nextLongArray(N);
+			long coeff = 1L;
+			long ans = 0L;		
+			for(long k=-1;k<=x-2;k++)
+			{
+				if(k==-1)
+				{
+					ans = arr[x-2-(int)(k)];					
+				}
+				else
+				{
+					long nume = M + k;
+					long deno = k + 1L;
+					coeff = mul(mul(coeff,nume),inverseMod(deno));
+					ans = add(ans, mul(arr[x-2-(int)(k)], coeff));
+				}
+			}
+			out.println(ans % mod);  //This costed me a WA
+		}
+	}
 	/************************ SOLUTION ENDS HERE ************************/
-
-
 
 	/************************ TEMPLATE STARTS HERE ************************/
 
 	public static void main(String []args) throws IOException {
 		FastScanner in  = new FastScanner(System.in);
-		FastWriter  out = new FastWriter(System.out);
-		solve(in, out);
+		FastWriter  out = new FastWriter(System.out);	
+		solve3(in,out);		 //Atlast solve3 won the show
 		in.close();
 		out.close();
-	}    
+	}
 
 	static class FastScanner{
 		public BufferedReader reader;
@@ -56,6 +90,17 @@ public class Unary
 		public FastScanner(InputStream stream){
 			reader = new BufferedReader(new InputStreamReader(stream));
 			st = null;
+		}
+		public FastScanner(String file){
+			try
+			{
+				reader = new BufferedReader(new FileReader(file));
+				st = null;
+			}
+			catch(FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		public String next(){
 			while(st == null || !st.hasMoreTokens()){
@@ -133,6 +178,13 @@ public class Unary
 		}
 		public void print(char i) {
 			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
+		}
+		public void print(Object o){
+			print(o.toString());
+		}
+		public void println(Object o){
+			print(o.toString());
+			print('\n');
 		}
 		public void print(String s){
 			try{writer.write(s);} catch(IOException e){e.printStackTrace();}

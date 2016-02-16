@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-public class FibonacciSegment
+public class InfiniteSequence
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
@@ -9,25 +9,16 @@ public class FibonacciSegment
 
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int len = s1.nextInt();
-		long arr[] = s1.nextLongArray(len);
-		if(len <= 2)
-			out.print(len);
+		long N = s1.nextLong();
+		double d = ((-1.0 + Math.sqrt(1L + (8L * N)))/(double)2);
+		if(Math.floor(d) == d)
+			out.print((long)d);
 		else
 		{
-			int max = 2;
-			int segment = 2;
-			for(int i=2;i<len;i++)
-			{
-				if(arr[i] == (arr[i-1] + arr[i-2]))
-					segment++;
-				else
-					segment = 2;
-				max = Math.max(max, segment);
-			}
-			out.print(max);
+			long M = (long)d;
+			M = (M * (M + 1L)) / 2L;
+			out.print(N - M);
 		}
-
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/
@@ -124,6 +115,13 @@ public class FibonacciSegment
 		}
 		public void print(boolean i) {
 			print(Boolean.toString(i));
+		}
+		public void print(Object o){
+			print(o.toString());
+		}
+		public void println(Object o){
+			print(o.toString());
+			print('\n');
 		}
 		public void print(char i) {
 			try{writer.write(i);} catch(IOException e){e.printStackTrace();}

@@ -1,83 +1,49 @@
 import java.util.*;
 import java.io.*;
-public class FactorialLengthSum
+public class WormsEvolution
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-	private static final int MAX = (int)1e6 + 10;
-	private static int bigPrime[] = new int[MAX];
-	private static int cache[] = new int[MAX];
-	
-	private static void bigPrimeSieve()
+	static class Pair implements Comparable<Pair>
 	{
-		bigPrime[1] = 1;
-		for(int i=2;i<MAX;i++)
+		int elem,index;
+		Pair(int elem,int index)
 		{
-			if(bigPrime[i] == 0)
-			{
-				for(int j=i;j<MAX;j+=i)
-					bigPrime[j] = i;
-			}
+			this.elem = elem;
+			this.index = index;
 		}
-	}
-	private static int factorialLength(int N)
-	{
-		if(N==1)
-			return 0;
-		else
-		{
-			int ct = 0;
-			while(N != 1)
-			{
-				int prime = bigPrime[N];
-				while(N % prime == 0)
-				{
-					N /= prime;
-					ct++;
-				}
-			}
-			return ct;
-		}	
-	}
-	private static void preCompute()
-	{
-		cache[1] = 0;
-		for(int i=2;i<MAX;i++)
-		{
-			int fLen = factorialLength(i);
-			cache[i] = fLen + cache[i-1];
+		@Override
+		public int compareTo(Pair o) {
+			return this.elem - o.elem;
 		}
-	}
-	private static long pleasingValue(int arr[],int curr)
-	{
-		int len = arr.length;
-		long sum = 0;
-		for(int i=0;i<len;i++)
-		{
-			if(((curr>>i)&1)==1)
-				sum += (long)cache[arr[i]];
-		}
-		return sum;
-	}
-	/*****All necessary pre calculations are done in the static block******/
-	static {
-		bigPrimeSieve();
-		preCompute();
 	}
 	private static void solve(FastScanner s1, FastWriter out){
+
 		int len = s1.nextInt();
-		int arr[] = s1.nextIntArray(len);
-		int end = 1<<len;
-		long sum = 0;
-		for(int i=1;i<end;i++)
-		{
-			long please = pleasingValue(arr, i);
-			if(please % 2 == 0)
-				sum += please;
-		}
-		out.print(sum);
+		Pair arr[] = new Pair[len];
+		for(int i=0;i<len;i++)
+			arr[i] = new Pair(s1.nextInt(), i+1);
+		Arrays.sort(arr);	
+		Pair curr = new Pair(0, 0);
+		for(int i=0;i<len;i++)
+			for(int j=0;j<len;j++)
+			{
+				if(i != j)
+				{
+					curr.elem = arr[i].elem + arr[j].elem;
+					int index = Arrays.binarySearch(arr, curr);
+					if(index >= 0)
+					{
+						out.print(arr[index].index+" "+arr[i].index + " " + arr[j].index);
+						return;
+					}
+				}
+			}
+
+
+		out.println(-1);
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/
@@ -174,6 +140,13 @@ public class FactorialLengthSum
 		}
 		public void print(boolean i) {
 			print(Boolean.toString(i));
+		}
+		public void print(Object o){
+			print(o.toString());
+		}
+		public void println(Object o){
+			print(o.toString());
+			print('\n');
 		}
 		public void print(char i) {
 			try{writer.write(i);} catch(IOException e){e.printStackTrace();}

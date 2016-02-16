@@ -1,53 +1,95 @@
 import java.util.*;
 import java.io.*;
-public class PalindromicTimes
+public class NotEqualonaSegment
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
 	
-	private static boolean isPalin(int h,int m)
+	static class Pair implements Comparable<Pair>
 	{
-		return (m%10)*10 + (m/10) == h;
-	}
-	
-	private static String format(int h,int m)
-	{
-		String op = "";
-		if(h<10)
-			op = op + "0"+h+":";
-		else
-			op = op + h +":";
-		if(m < 10)
-			op = op +"0"+m	;
-		else
-			op = op+m;
-		
-		return op;
+		int index, GLIndex /*Greatest index such that the 2 values at these indices are not equal */;
+		Pair(int index,int GLIndex)
+		{
+			this.index = index;
+			this.GLIndex = GLIndex;
+		}
+		@Override
+		public int compareTo(Pair o) {
+			return this.index  - o.index;
+		}
+		@Override
+		public String toString() {
+			return "Index = "+index+" GLIndex = "+GLIndex;
+		}
 	}
 	private static void solve(FastScanner s1, FastWriter out){
 
-		String in[] = s1.nextLine().split(":");
-		int h = Integer.parseInt(in[0]);
-		int m = Integer.parseInt(in[1]);
-		for(int i=m+1;i<60;i++)
+		int len = s1.nextInt();
+		int q = s1.nextInt();
+		HashMap<Integer,ArrayList<Pair>> mp = new HashMap<>();
+		for(int i=1;i<=len;i++)
 		{
-			if(isPalin(h, i))
+			int num = s1.nextInt();
+			ArrayList<Pair> arl = mp.get(num);
+			if(arl == null)
 			{
-				out.print(format(h, i));
-				return;
+				arl = new ArrayList<>();
+				arl.add(new Pair(i, -1));
 			}
-		}
-		for(int i=(h+1)%24;;i = (i+1)%24)
-		{
-			for(int j=0;j<60;j++)
+			else
 			{
-				if(isPalin(i,j))
+				int size = arl.size();			
+				if((i - arl.get(size-1).index) == 1)
+					arl.add(new Pair(i, arl.get(size-1).GLIndex));
+				else
+					arl.add(new Pair(i, i-1));
+			}
+			mp.put(num, arl);
+		}
+		Pair checker = new Pair(-1, -1);
+		while(q-->0)
+		{
+			int l = s1.nextInt();
+			int r = s1.nextInt();
+			ArrayList<Pair> arl = mp.get(s1.nextInt());
+			if(arl == null)
+				out.println(l);
+			else
+			{
+				checker.index = l;
+				int L_index = Collections.binarySearch(arl, checker);
+				if(L_index < 0)
 				{
-					out.print(format(i,j));
-					return;
+					out.println(l);
+					continue;
 				}
+				checker.index = r;
+				int R_index = Collections.binarySearch(arl, checker);
+				if(R_index < 0)
+				{
+					out.println(r);
+					continue;
+				}
+				if((R_index - L_index + 1) == (r - l + 1))
+				{
+					out.println(-1);
+					continue;
+				}
+				
+				if(arl.get(L_index).GLIndex >= l)
+				{
+					out.println(arl.get(L_index).GLIndex);
+					continue;
+				}
+				if(arl.get(R_index).GLIndex <= r)
+				{
+					out.println(arl.get(R_index).GLIndex);
+					continue;
+				}
+				
+				out.println(-1);
 			}
 		}
 	}
@@ -146,6 +188,13 @@ public class PalindromicTimes
 		}
 		public void print(boolean i) {
 			print(Boolean.toString(i));
+		}
+		public void print(Object o){
+			print(o.toString());
+		}
+		public void println(Object o){
+			print(o.toString());
+			print('\n');
 		}
 		public void print(char i) {
 			try{writer.write(i);} catch(IOException e){e.printStackTrace();}

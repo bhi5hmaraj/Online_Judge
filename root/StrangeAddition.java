@@ -1,59 +1,34 @@
 import java.util.*;
 import java.io.*;
-public class Guessanumber
+public class StrangeAddition
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-	static int lo = (int)(-2e9), hi =(int)(2e9);
-	private static void process(String choice,int n,char flag)
+	
+	private static String convert(int n)
 	{
-		if(choice.equals("<"))
-		{
-			if(flag=='Y')
-				hi = (n-1)<hi?n-1:hi;
-			else
-				lo = n>lo?n:lo;
-		}
-		else if(choice.equals("<="))
-		{
-			if(flag=='Y')
-				hi = n<hi?n:hi;
-			else
-				lo = n+1>lo?n+1:lo;
-		}
-		else if(choice.equals(">"))
-		{
-			if(flag=='Y')			
-				lo = n+1>lo?n+1:lo;
-			else
-				hi = n<hi?n:hi;
-		}
-		else
-		{
-			if(flag=='Y')
-				lo = n>lo?n:lo;
-			else
-				hi = n-1<hi?n-1:hi;
-		}
+		if(n < 10)
+			return "00"+n;
+		else 
+			return "0"+n;
+	}
+	
+	private static boolean isAddable(String s1,String s2)
+	{
+		for(int i=0;i<3;i++)
+			if(!(s1.charAt(i) == '0' || s2.charAt(i) == '0'))
+				return false;
+		
+		return true;
 	}
 	
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int queries = s1.nextInt();
-		boolean flag = true;
-		while(queries-->0)
-		{
-			String line[] = s1.nextLine().split(" ");
-			process(line[0], Integer.parseInt(line[1]), line[2].charAt(0));
-			if(lo > hi)
-				flag = false;
-		}
-		if(flag)
-			out.print(lo);
-		else
-			out.print("Impossible");
+		int len = s1.nextInt();
+		int arr[] = s1.nextIntArray(len);
+		
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/
@@ -150,6 +125,13 @@ public class Guessanumber
 		}
 		public void print(boolean i) {
 			print(Boolean.toString(i));
+		}
+		public void print(Object o){
+			print(o.toString());
+		}
+		public void println(Object o){
+			print(o.toString());
+			print('\n');
 		}
 		public void print(char i) {
 			try{writer.write(i);} catch(IOException e){e.printStackTrace();}

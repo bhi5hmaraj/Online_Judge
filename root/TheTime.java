@@ -1,76 +1,22 @@
 import java.util.*;
 import java.io.*;
-public class JeffandPeriods
+public class TheTime
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-	static class  MyMap <K , V > extends TreeMap<K,ArrayList<V>>
-	{
-		private static final long serialVersionUID = 1L;    //don't know what it is but eclipse gives me a warning 
-		@Override
-		public ArrayList<V> put(K key, ArrayList<V> value) {
-			return super.put(key, value);
-		}
 
-		public void putInChain(K key,V value)
-		{
-			ArrayList<V> arl = get(key);
-			if(arl == null)			
-				arl = new ArrayList<>();		
-			
-			arl.add(value);
-			put(key,arl);
-		}
-	}
 	private static void solve(FastScanner s1, FastWriter out){
-
-		int len = s1.nextInt();
-		MyMap<Integer,Integer> mp = new MyMap<>();
-		ArrayList<String> op = new ArrayList<>(len);
-		for(int i=1;i<=len;i++)
-			mp.putInChain(s1.nextInt(), i);
-		
-		StringBuilder sb = new StringBuilder();
-		int ct = 0;
-		for(Map.Entry<Integer, ArrayList<Integer>> e:mp.entrySet())
-		{
-			ArrayList<Integer> arl = e.getValue();
-			if(arl.size() == 1)
-			{
-				ct++;
-				op.add(e.getKey() + " 0");
-			}
-			else
-			{
-				int diff = arl.get(1).intValue() - arl.get(0).intValue();
-				boolean flag = true;
-				for(int i=2,l = arl.size();i<l;i++)
-				{
-					if((arl.get(i).intValue() - arl.get(i-1).intValue()) != diff)
-					{
-						flag = false;
-						break;
-					}
-				}
-				if(flag)
-				{
-					ct++;
-					op.add(e.getKey() + " " + diff);
-				}
-			}
-		}
-		if(ct==0)
-		{
-			out.print("0");
-		}
-		else
-		{
-			out.println(ct);
-			for(String s:op)
-				out.println(s);
-		}
+		String in[] = s1.nextLine().split(":");
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(in[0]));
+		c.set(Calendar.MINUTE, Integer.parseInt(in[1]));
+		int a = s1.nextInt();
+		c.add(Calendar.MINUTE, a);
+		int h = c.get(Calendar.HOUR_OF_DAY);
+		int m = c.get(Calendar.MINUTE);
+		out.print( ( (h < 10) ? "0" + h : h ) + ":" + ( ( m < 10 ) ? "0" + m : m ) );
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/
@@ -167,6 +113,13 @@ public class JeffandPeriods
 		}
 		public void print(boolean i) {
 			print(Boolean.toString(i));
+		}
+		public void print(Object o){
+			print(o.toString());
+		}
+		public void println(Object o){
+			print(o.toString());
+			print('\n');
 		}
 		public void print(char i) {
 			try{writer.write(i);} catch(IOException e){e.printStackTrace();}

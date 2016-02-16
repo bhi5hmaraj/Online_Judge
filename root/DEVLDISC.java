@@ -1,63 +1,40 @@
 import java.util.*;
 import java.io.*;
-public class GeorgeRound
+class DEVLDISC
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
-
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-    static class MultiSet <T> extends TreeMap<T,Integer>
-    {
-	public void add(T key)
-	{
-	    Integer q = super.get(key);
-	    if(q == null)
-		super.put(key, 1);
-	    else
-		super.put(key, q+1);
-	}
-	@Override
-	public Integer remove(Object key) {
-	    Integer q = super.get(key);
-	    if(q != null)
-	    {
-		if(q == 1)
-		    super.remove(key);
-		else
-		    super.put((T)key, q-1);
-	    }
-	    else
-		throw new NullPointerException("The specified key cannot be removed from the map");
-
-	    return q;
-	}
-    }
-	private static void solve(FastScanner s1, FastWriter out){
-
-		MultiSet<Integer> mp = new MultiSet<>();
-		int n = s1.nextInt();
-		int m = s1.nextInt();
-		int arr[] = s1.nextIntArray(n);
-		for(int i=1;i<=m;i++)
-			mp.add(s1.nextInt());
-		
-		int ct = 0;
-		for(int a:arr)
+	
+	
+	private static void solve(FastScanner s1, FastWriter out)/* This is the actual solution */{
+		int t = s1.nextInt();
+		while(t-->0)
 		{
-			Integer ceil = mp.ceilingKey(a);
-			if(ceil == null)
-				ct++;
+			int N = s1.nextInt();
+			if(N < 7)
+				out.println(-1);
 			else
-				mp.remove(ceil);
-			
-			//System.out.println(mp);
+			{
+				out.println(N);
+				for(int i=2;i<=5;i++)
+					out.println(i+" "+(i+1));
+				out.println("1 3");
+				out.println("1 5");
+				out.println("4 7");
+				N -= 7;
+				if(N != 0)
+				{
+					for(int i=8;N > 0;N--,i++)					
+						out.println("3 "+i);					
+				}
+				out.println(1);
+			}
 		}
-		out.print(ct);
 	}
+
 
 	/************************ SOLUTION ENDS HERE ************************/
-
-
 
 	/************************ TEMPLATE STARTS HERE ************************/
 
@@ -67,7 +44,7 @@ public class GeorgeRound
 		solve(in, out);
 		in.close();
 		out.close();
-	}    
+	}
 
 	static class FastScanner{
 		public BufferedReader reader;
@@ -152,6 +129,13 @@ public class GeorgeRound
 		}
 		public void print(char i) {
 			try{writer.write(i);} catch(IOException e){e.printStackTrace();}
+		}
+		public void print(Object o){
+			print(o.toString());
+		}
+		public void println(Object o){
+			print(o.toString());
+			print('\n');
 		}
 		public void print(String s){
 			try{writer.write(s);} catch(IOException e){e.printStackTrace();}

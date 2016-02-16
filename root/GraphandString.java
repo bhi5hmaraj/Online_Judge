@@ -23,9 +23,9 @@ public class GraphandString
 			return;
 
 		}
-		HashSet<Integer>[] adj = (HashSet<Integer>[])new HashSet[V+1];	
+		ArrayList<Integer>[] adj = (ArrayList<Integer>[])new ArrayList[V+1];	
 		for(int i=1;i<=V;i++)
-			adj[i] = new HashSet<>();
+			adj[i] = new ArrayList<>();
 		for(int i=1;i<=E;i++)
 		{
 			int u = s1.nextInt();
@@ -36,12 +36,12 @@ public class GraphandString
 		HashSet<Integer> A = new HashSet<>();
 		HashSet<Integer> B = new HashSet<>();
 		HashSet<Integer> C = new HashSet<>();
-		for(int i=1;i<=V;i++)
+		for(int i=1;i<=V;i++)       //Adding B
 		{
 			if(adj[i].size() == V-1)
 				B.add(i);
 		}
-		for(int i=1;i<=V;i++)
+		for(int i=1;i<=V;i++)		//Adding A
 		{
 			if(!B.contains(i))			
 			{
@@ -53,7 +53,7 @@ public class GraphandString
 				break;
 			}
 		}
-		for(int i=1;i<=V;i++)
+		for(int i=1;i<=V;i++)      //Adding C
 		{
 			if(!A.contains(i) && !B.contains(i))
 				C.add(i);

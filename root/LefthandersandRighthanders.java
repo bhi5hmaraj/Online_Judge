@@ -1,113 +1,40 @@
 import java.util.*;
 import java.io.*;
-public class BeforeanExam
+public class LefthandersandRighthanders
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-	private static int interval[][];
-	private static int ans[];
-	private static int calls = 0;
-	private static boolean recurse(int day , int sum)
+	private static String getCorrectOreientation(int i,int j,char arr[])
 	{
-		calls++;
-		if(day<0)
-		{
-			if(sum == 0)
-				return true;
-			else
-				return false;
-		}
+		if(arr[i] == arr[j])
+			return (i+1) + " "+ (j+1);
 		else
-		{
-			boolean result = false;
-			if(sum < interval[day][0])
-				return false;
-			for(int i=interval[day][0] ; i<=interval[day][1];i++)
-			{				
-				 result = recurse(day-1, sum-i);				 
-				 if(result)
-				 {
-					 ans[day] = i;
-					 return true;					
-				 }
-			}
-			return result;
-		}
+			return (arr[i] == 'L')?((i+1) + " "+ (j+1)):((j+1) + " "+ (i+1));
 	}
-	
-	
 	private static void solve(FastScanner s1, FastWriter out){
 
-		int days = s1.nextInt();
-		int sum = s1.nextInt();
-		interval = new int[days][2];
-		ans = new int[days];
-		int maxSum = 0;
-		for(int i=0;i<days;i++)
+		int len = s1.nextInt();
+		char hand[] = s1.nextLine().toCharArray();
+		if((len/2)%2 == 0)
 		{
-			interval[i][0] = s1.nextInt();
-			interval[i][1] = s1.nextInt();
-			maxSum += interval[i][1];
-		}
-		if(sum > maxSum)
-		{
-			out.print("NO");
+			for(int i=0;i+2< len;i+=4)
+				out.println(getCorrectOreientation(i, i+2, hand));
+			for(int i=1;i+2< len;i+=4)
+				out.println(getCorrectOreientation(i, i+2, hand));
 		}
 		else
 		{
+			for(int i=0;i+4<=len;i+=4)
+				out.println(getCorrectOreientation(i, i+2, hand));
+			for(int i=3;i+2<len;i+=4)
+				out.println(getCorrectOreientation(i, i+2, hand));
 			
-			if(recurse(days-1,sum))
-			{	
-				out.println("YES");
-				for(int a:ans)
-					out.print(a+" ");
-			}
-			else
-			{
-				out.print("NO");
-			}
-			out.println("calls " + calls);
+			out.println(getCorrectOreientation(len-2, 1, hand));			
 		}
+	}
 
-	}
-	
-	private static void solve2(FastScanner s1 , FastWriter out)
-	{
-		int days = s1.nextInt();
-		int sum = s1.nextInt();
-		interval = new int[days][2];
-		ans = new int[days];
-		int maxSum = 0;
-		int minSum = 0;
-		for(int i=0;i<days;i++)
-		{
-			interval[i][0] = s1.nextInt();
-			interval[i][1] = s1.nextInt();
-			maxSum += interval[i][1];
-			minSum += interval[i][0];
-		}
-		if(sum > maxSum || sum < minSum)
-		{
-			out.print("NO");
-		}
-		else
-		{
-			int need = sum - minSum;
-			int ans[] = new int[days];
-			for(int i=0;i<days;i++)
-			{
-				ans[i] = interval[i][0];
-				int add = Math.min(need, interval[i][1] - interval[i][0]);
-				need -= add;
-				ans[i] += add;
-			}
-			out.println("YES");
-			for(int a:ans)
-				out.print(a+" ");
-		}
-	}
 	/************************ SOLUTION ENDS HERE ************************/
 
 
@@ -117,7 +44,7 @@ public class BeforeanExam
 	public static void main(String []args) throws IOException {
 		FastScanner in  = new FastScanner(System.in);
 		FastWriter  out = new FastWriter(System.out);
-		solve2(in, out);  // Backtrack solution caused tle 
+		solve(in, out);
 		in.close();
 		out.close();
 	}    
@@ -128,6 +55,17 @@ public class BeforeanExam
 		public FastScanner(InputStream stream){
 			reader = new BufferedReader(new InputStreamReader(stream));
 			st = null;
+		}
+		public FastScanner(String file){
+			try
+			{
+				reader = new BufferedReader(new FileReader(file));
+				st = null;
+			}
+			catch(FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		public String next(){
 			while(st == null || !st.hasMoreTokens()){
@@ -183,6 +121,16 @@ public class BeforeanExam
 		public FastWriter(OutputStream stream){
 			writer = new BufferedWriter(new OutputStreamWriter(stream));
 		}
+		public FastWriter(String file){
+			try
+			{
+				writer = new BufferedWriter(new PrintWriter(file));
+			}
+			catch(FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+		}
 		public void print(int i) {
 			print(Integer.toString(i));
 		}
@@ -202,6 +150,13 @@ public class BeforeanExam
 		}
 		public void print(boolean i) {
 			print(Boolean.toString(i));
+		}
+		public void print(Object o){
+			print(o.toString());
+		}
+		public void println(Object o){
+			print(o.toString());
+			print('\n');
 		}
 		public void print(char i) {
 			try{writer.write(i);} catch(IOException e){e.printStackTrace();}

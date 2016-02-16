@@ -1,129 +1,173 @@
 import java.util.*;
 import java.io.*;
-class SEATL
+import java.math.BigInteger;
+class STROPR
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-    public static <Key> void frequency(Map<Key , java.lang.Integer> mp , Key k)
-    {
-    	//Finds frequency of of each element of generic type Key
-    	Integer query = mp.get(k);
-    	if(query == null)
-    		mp.put(k, new Integer(1));
-    	else
-    	{
-    		mp.put(k, query + 1);
-    	}
-    }
-	
-	private static void solve(FastScanner s1, FastWriter out)/* This is the actual solution */{
+	static final long mod = ((long)1e9) + 7;
+	static final BigInteger modBig = BigInteger.valueOf(mod);
+	private static long mul(long a,long b)
+	{
+		return ((a%mod)*(b%mod))%mod;
+	}
+	private static long add(long a,long b)
+	{
+		return ((a%mod)+(b%mod))%mod;
+	}	
+	static void solve(FastScanner s1, FastWriter out)/* This is the actual solution */{
 		int t = s1.nextInt();
 		while(t-->0)
 		{
 			int N = s1.nextInt();
-			int M = s1.nextInt();
-			int max = Integer.MIN_VALUE;
-			int arr[][] = new int[N][M];
-			HashMap<Integer,Integer>[] row =(HashMap<Integer,Integer>[]) new HashMap[N];
-			HashMap<Integer,Integer>[] col =(HashMap<Integer,Integer>[]) new HashMap[M];
-
-			for(int i=0;i<N;i++)
-				for(int j=0;j<M;j++)
-				{
-					arr[i][j] = s1.nextInt();
-					if(row[i] == null)
-						row[i] = new HashMap<>();
-					if(col[j] == null)
-						col[j] = new HashMap<>();
-					frequency(row[i], arr[i][j]);
-					frequency(col[j], arr[i][j]);					
-				}
-			//out.println(Arrays.deepToString(row));
-			//out.println(Arrays.deepToString(col));
-			for(int i=0;i<N;i++)
-			{				
-				for(int j=0;j<M;j++)
-				{
-					HashMap<Integer,Integer> freq = new HashMap<>(row[i]);
-					freq.put(arr[i][j], freq.get(arr[i][j]) - 1);
-					for (Map.Entry<Integer,Integer> e : col[j].entrySet()) 
-					{
-						int key = e.getKey();
-						int val = e.getValue();
-						Integer query = freq.get(key);				    
-				    	if(query == null)
-				    		freq.put(key, val);
-				    	else				    	
-				    		freq.put(key, query + val);				    	
-					}
-					//out.println("i = "+i+" j = "+j+" freq "+freq);
-					for (Map.Entry<Integer,Integer> e : freq.entrySet()) 
-					{
-						max = Math.max(max, e.getValue());
-					}
-				}
-			}
-			out.println(max);
-		}
-	}
-	
-
-	private static int arr[][],N ,M; 
-	private static HashMap<Integer,HashMap<Integer,Integer>> rows,cols;
-	
-	private static void miniSolver(HashMap<Integer,HashMap<Integer,Integer>> rows,HashMap<Integer,HashMap<Integer,Integer>> cols)
-	{
-		for (Map.Entry<Integer,HashMap<Integer,Integer>> e : rows.entrySet()) 
-		{
-			int elem = e.getKey().intValue();
-			HashMap<Integer,Integer> mp = e.getValue();
-			int rMax = -1,freqMax = -1;
-			for (Map.Entry<Integer,Integer> f : mp.entrySet()) 
+			int x = s1.nextInt();
+			long M = s1.nextLong();
+			long arr[] = s1.nextLongArray(N);
+			long coeff = 1L;
+			long ans = 0L;		
+			BigInteger c = BigInteger.valueOf(coeff);
+			BigInteger a = BigInteger.valueOf(ans);
+			double time = 0.0;
+			boolean flag = true;
+			for(long k=-1;k<=x-2;k++)
 			{
-				if()
+				long start = System.nanoTime();
+				if(k==-1)
+				{
+					ans = arr[x-2-(int)(k)];
+					a = BigInteger.valueOf(ans);
+				}
+				else
+				{
+					long nume = M + k;
+					long deno = k + 1L;
+					BigInteger n = BigInteger.valueOf(nume);
+					BigInteger d = BigInteger.valueOf(deno);					
+					c = c.multiply(n);								
+					c = c.divide(d);		
+					a = a.add(c.multiply(BigInteger.valueOf(arr[x-2-(int)(k)])));
+				}
+				long stop = System.nanoTime();
+				time += (stop - start)/1e9;
+				if(time>=(0.3))
+				{
+					//throw new RuntimeException("TLE");
+					solve4(N,x,M,arr,out);
+					flag = false;
+					break;
+				}
 			}
+			if(flag)
+				out.println(a.mod(modBig));
 		}
 	}
-	
-	private static void solve2(FastScanner s1, FastWriter out)/* This is the actual solution */{
+	static void solve2(FastScanner s1, FastWriter out)/* This is the actual solution */{
 		int t = s1.nextInt();
 		while(t-->0)
 		{
-			N = s1.nextInt();
-			M = s1.nextInt();
-			arr = new int[N][M];
-			rows = new HashMap<>();
-			cols = new HashMap<>();
-			for(int i=0;i<N;i++)
+
+			int N = s1.nextInt();
+			int x = s1.nextInt();
+			int M = s1.nextInt();
+			long arr[] = s1.nextLongArray(N);
+			long matrix[][] = new long[M+1][x+1];
+			for(int i=1;i<=x;i++)
 			{
-				for(int j=0;j<M;j++)
+				matrix[0][i] = arr[i-1];
+			}
+			for(int i=1;i<=M;i++)
+			{
+				for(int j=1;j<=x;j++)
 				{
-					arr[i][j] = s1.nextInt();
-					if(rows.get(arr[i][j]) == null)
-						rows.put(arr[i][j], new HashMap<>());
-					if(cols.get(arr[i][j]) == null)
-						cols.put(arr[i][j], new HashMap<>());
-					frequency(rows.get(arr[i][j]), i);
-					frequency(cols.get(arr[i][j]), j);
+					matrix[i][j] = add(matrix[i][j-1], matrix[i-1][j]);
 				}
 			}
-			
+			out.println(matrix[M][x]);
 		}
+	}
+
+	private static long modPow(long a,long b)
+	{
+		if(b == 0L || a == 1L)
+			return 1L;
+		else if(b == 1L)
+			return a;
+		else
+		{
+			if((b&1L) == 0L)
+				return modPow((a * a)%mod,b/2L);
+			else
+				return (a * modPow((a * a)%mod,((b-1L)/2L)))%mod ;
+		}
+	}
+	private static long inverseMod(long n)
+	{
+		return modPow(n,mod - 2L);
+	}
+	static void solve3(FastScanner s1, FastWriter out)/* This is the actual solution */{
+		int t = s1.nextInt();
+		while(t-->0)
+		{
+
+			int N = s1.nextInt();
+			int x = s1.nextInt();
+			long M = s1.nextLong();
+			long arr[] = s1.nextLongArray(N);
+			long coeff = 1L;
+			long ans = 0L;		
+			for(long k=-1;k<=x-2;k++)
+			{
+				if(k==-1)
+				{
+					ans = arr[x-2-(int)(k)];					
+				}
+				else
+				{
+					long nume = M + k;
+					long deno = k + 1L;
+					coeff = ((((coeff % mod) * (nume % mod))%mod) * (inverseMod(deno))) % mod;
+					ans = add(ans, mul(arr[x-2-(int)(k)], coeff));
+				}
+			}
+			out.println(ans%mod);
+		}
+	}
+	static void solve4(int N,int x,long M,long arr[], FastWriter out)/* This is the actual solution */{
+
+		long coeff = 1L;
+		long ans = 0L;		
+		for(long k=-1;k<=x-2;k++)
+		{
+			if(k==-1)
+			{
+				ans = arr[x-2-(int)(k)];					
+			}
+			else
+			{
+				long nume = M + k;
+				long deno = k + 1L;
+				coeff = ((((coeff % mod) * (nume % mod))%mod) * (inverseMod(deno))) % mod;
+				ans = add(ans, mul(arr[x-2-(int)(k)], coeff));
+			}
+		}
+		out.println(ans);		
 	}
 	/************************ SOLUTION ENDS HERE ************************/
 
 	/************************ TEMPLATE STARTS HERE ************************/
 
 	public static void main(String []args) throws IOException {
-		FastScanner in  = new FastScanner(System.in);
 		//String input  = "/home/bhishmaraj/Documents/OJ/Java/input.txt";		
 		//FastScanner in  = new FastScanner(input);
+		FastScanner in  = new FastScanner(System.in);
 		FastWriter  out = new FastWriter(System.out);
-		//long start = System.nanoTime();		
-		solve(in, out);
+		//long start = System.nanoTime();
+		solve(in,out);
 		//long stop = System.nanoTime();
-		//System.err.println("Time : "+((stop-start)/1e9) + " s");
+		//System.err.println((stop-start)/1e9 + " s");
+		//solve2(in, out);		
+		//solve3(in,out);		 //Atlast solve3 won the show
 		in.close();
 		out.close();
 	}

@@ -1,56 +1,33 @@
 import java.util.*;
 import java.io.*;
-public class ComparingStrings
+public class NumberChallenge
 {
 
 	/************************ SOLUTION STARTS HERE ************************/
 
 	//DONT FORGET TO COMMIT AND PUSH TO GITHUB
-
+	private static long mod = 1073741824L;
+	private static int numOfDiv[] = new int[(int)(1e6) + 10];
+	
+	static
+	{
+		for(int i=1;i<numOfDiv.length;i++)
+			for(int j=i;j<numOfDiv.length;j += i)
+				numOfDiv[j]++;
+	}
+	
 	private static void solve(FastScanner s1, FastWriter out){
+
+		int a = s1.nextInt();
+		int b = s1.nextInt();
+		int c = s1.nextInt();
+		long sum = 0;
+		for(int i=1;i<=a;i++)
+			for(int j=1;j<=b;j++)
+				for(int k=1;k<=c;k++)
+					sum = ((sum%mod) + (numOfDiv[i * j * k]%mod))%mod;
 		
-		String str1 = s1.nextLine();
-		String str2 = s1.nextLine();
-		int len1 = str1.length();
-		int len2 = str2.length();
-		if(len1!=len2)
-			out.print("NO");
-		else
-		{
-			int diff = 0;
-			char a='*',b='*',c='*',d='*';
-			for(int i=0;i<len1;i++)
-			{
-				if(str1.charAt(i)!=str2.charAt(i))
-				{
-					diff++;
-					if(diff == 1)
-					{
-						a = str1.charAt(i);
-						b = str2.charAt(i);
-					}
-					if(diff == 2)
-					{
-						c = str1.charAt(i);
-						d = str2.charAt(i);
-					}
-				}
-			}			
-			if(diff == 0)
-			{
-				out.print("YES");
-				return;
-			}			
-			if(diff!=2)
-				out.print("NO");
-			else
-			{
-				if(a==d && c==b)
-					out.print("YES");
-				else
-					out.print("NO");
-			}
-		}
+		out.print(sum);
 	}
 
 	/************************ SOLUTION ENDS HERE ************************/
@@ -147,6 +124,13 @@ public class ComparingStrings
 		}
 		public void print(boolean i) {
 			print(Boolean.toString(i));
+		}
+		public void print(Object o){
+			print(o.toString());
+		}
+		public void println(Object o){
+			print(o.toString());
+			print('\n');
 		}
 		public void print(char i) {
 			try{writer.write(i);} catch(IOException e){e.printStackTrace();}

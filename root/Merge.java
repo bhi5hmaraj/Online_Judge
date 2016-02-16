@@ -4,6 +4,7 @@ class Merge
 {
 	public static int[] merge(int arr1[],int arr2[])
 	{
+
 		int arr[] = new int [arr1.length+arr2.length];
 		int ptr1=0,ptr2=0;
 		for(int i=0;i<arr.length;i++)
